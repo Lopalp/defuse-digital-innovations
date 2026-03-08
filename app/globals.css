@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-jakarta);
+  --font-serif: var(--font-playfair);
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes peek-nudge {
+  0%, 100% { transform: translateX(0%); }
+  40% { transform: translateX(-8%); }
+  60% { transform: translateX(-8%); }
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
