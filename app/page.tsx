@@ -461,7 +461,7 @@ export default function Home() {
         const baseIdx = stepSize > 0 ? Math.round(phase2 / stepSize) : 0;
         const isAligned = stepSize > 0 && Math.abs(phase2 - baseIdx * stepSize) < 5;
 
-        if (isMd && settled && hoveredCard !== null && isAligned) {
+        if (isMd && settled && hoveredCard !== null && isAligned && baseIdx >= 3) {
           const visibles = [baseIdx, baseIdx + 1, baseIdx + 2];
           if (visibles.includes(i) && visibles.includes(hoveredCard)) {
             const gridW = 3 * gp.colW + 2 * gp.gap;
@@ -518,7 +518,7 @@ export default function Home() {
         return (
           <div
             key={`overlay-${i}`}
-            className={`fixed overflow-hidden ${settled && opacity > 0 ? 'cursor-pointer' : 'pointer-events-none'}`}
+            className={`fixed overflow-hidden ${settled && opacity > 0 && !(isFeature && hScroll > 0) ? 'cursor-pointer' : 'pointer-events-none'}`}
             style={{
               zIndex: hoveredCard === i ? 8 : isCenter && !settled ? 6 : 4,
               backgroundColor: isSeparator ? '#000' : undefined,
