@@ -13,18 +13,15 @@ export default function DatenschutzPage() {
     <>
       <Header />
       <main>
-        <section className="pt-32 pb-20 px-6">
+        <section className="pt-40 pb-24 px-6">
           <div className="max-w-3xl mx-auto">
-            <p className="text-red-500 text-sm font-bold uppercase tracking-[0.2em] mb-4">
-              Rechtliches
-            </p>
-            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-16">
+            <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight mb-20">
               Datenschutz
             </h1>
 
-            <div className="space-y-10 text-sm text-gray-600 leading-relaxed">
+            <div className="space-y-12 text-sm text-gray-500 leading-relaxed">
               <div>
-                <h2 className="text-lg font-extrabold text-gray-900 mb-3">
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
                   1. Datenschutz auf einen Blick
                 </h2>
                 <h3 className="font-bold text-gray-900 mb-2">
@@ -39,14 +36,14 @@ export default function DatenschutzPage() {
               </div>
 
               <div>
-                <h2 className="text-lg font-extrabold text-gray-900 mb-3">
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
                   2. Verantwortliche Stelle
                 </h2>
                 <p>
                   Verantwortlich für die Datenverarbeitung auf dieser Website
                   ist:
                 </p>
-                <p className="mt-3">
+                <p className="mt-4">
                   defuse. digital
                   <br />
                   Louis Radisch
@@ -60,11 +57,11 @@ export default function DatenschutzPage() {
               </div>
 
               <div>
-                <h2 className="text-lg font-extrabold text-gray-900 mb-3">
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
                   3. Datenerfassung auf dieser Website
                 </h2>
                 <h3 className="font-bold text-gray-900 mb-2">Server-Log-Dateien</h3>
-                <p className="mb-4">
+                <p className="mb-6">
                   Der Provider der Seiten erhebt und speichert automatisch
                   Informationen in sogenannten Server-Log-Dateien, die Ihr
                   Browser automatisch an uns übermittelt. Dies sind: Browsertyp
@@ -84,7 +81,7 @@ export default function DatenschutzPage() {
               </div>
 
               <div>
-                <h2 className="text-lg font-extrabold text-gray-900 mb-3">
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
                   4. Hosting
                 </h2>
                 <p>
@@ -103,11 +100,11 @@ export default function DatenschutzPage() {
               </div>
 
               <div>
-                <h2 className="text-lg font-extrabold text-gray-900 mb-3">
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
                   5. Ihre Rechte
                 </h2>
                 <p>Sie haben jederzeit das Recht auf:</p>
-                <ul className="list-disc list-inside mt-3 space-y-1">
+                <ul className="list-disc list-inside mt-4 space-y-2">
                   <li>
                     Auskunft über Ihre bei uns gespeicherten personenbezogenen
                     Daten
@@ -118,14 +115,14 @@ export default function DatenschutzPage() {
                   <li>Widerspruch gegen die Verarbeitung</li>
                   <li>Datenübertragbarkeit</li>
                 </ul>
-                <p className="mt-4">
+                <p className="mt-6">
                   Hierzu sowie zu weiteren Fragen zum Thema Datenschutz können
                   Sie sich jederzeit an uns wenden.
                 </p>
               </div>
 
               <div>
-                <h2 className="text-lg font-extrabold text-gray-900 mb-3">
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
                   6. Cookies
                 </h2>
                 <p>
@@ -137,7 +134,7 @@ export default function DatenschutzPage() {
               </div>
 
               <div>
-                <h2 className="text-lg font-extrabold text-gray-900 mb-3">
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
                   7. Externe Dienste
                 </h2>
                 <p>

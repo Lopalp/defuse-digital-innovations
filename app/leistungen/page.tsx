@@ -60,19 +60,16 @@ export default function LeistungenPage() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 px-6">
+        <section className="pt-40 pb-24 px-6">
           <div className="max-w-4xl mx-auto">
-            <p className="text-red-500 text-sm font-bold uppercase tracking-[0.2em] mb-4">
-              Leistungen
-            </p>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.05]">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.05]">
               Was wir{" "}
-              <span className="font-serif italic font-normal text-gray-600">
+              <span className="font-serif italic font-normal text-gray-500">
                 wirklich
               </span>{" "}
               machen
             </h1>
-            <p className="mt-6 text-lg text-gray-500 max-w-2xl font-medium leading-relaxed">
+            <p className="mt-8 text-lg text-gray-500 max-w-2xl font-medium leading-relaxed">
               Keine Buzzwords. Wir bauen schnelle, sichere und sichtbare Websites
               — von der ersten Zeile Code bis zum letzten Lighthouse-Audit.
             </p>
@@ -80,7 +77,7 @@ export default function LeistungenPage() {
         </section>
 
         {/* Services Grid */}
-        <section className="pb-32 px-6">
+        <section className="pb-40 px-6">
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
             {SERVICES.map((service) => {
               const Icon = service.icon;
@@ -135,7 +132,7 @@ export default function LeistungenPage() {
         </section>
 
         {/* CTA */}
-        <section className="px-6 pb-20">
+        <section className="px-6 pb-24">
           <div className="max-w-4xl mx-auto bg-gray-900 rounded-3xl p-10 md:p-16 text-center">
             <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
               Projekt im Kopf?

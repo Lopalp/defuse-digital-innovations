@@ -414,9 +414,6 @@ export default function Home() {
   const gp = gridParamsRef.current;
   const snapTarget = gp.vw - gp.s3Left;
   const centerH = (gp.vw + gp.colW) / 2 + (allCards.length - 4) * (gp.colW + gp.gap);
-  const displaySection = activeSection === 1
-    ? (hScroll >= centerH ? 3 : hScroll >= snapTarget ? 2 : activeSection)
-    : activeSection;
   const heroTextOp = 1 - Math.min(morph / 0.3, 1);
   const radius = morph * 1.5;
   const gridOp = isMd ? 0 : 1;
@@ -650,27 +647,18 @@ export default function Home() {
         </a>
       </div>
 
-      {/* Career & Contact Links */}
+      {/* Contact Link */}
       <div className="fixed bottom-4 right-4 md:bottom-6 md:right-8 z-40 flex items-center gap-3">
-        <a href="/karriere" className="text-[10px] font-medium text-gray-400 hover:text-gray-600 transition-colors">
-          Karriere
-        </a>
         <a href="/kontakt" className="text-[10px] font-medium text-gray-400 hover:text-gray-600 transition-colors">
           Kontakt
         </a>
       </div>
 
-      {/* Section Indicator */}
-      <div className="fixed top-20 md:top-24 left-4 md:left-8 z-40 pointer-events-none">
-        <span className="text-xs md:text-sm font-bold text-red-500 tabular-nums transition-all duration-300">
-          {String(displaySection + 1).padStart(2, "0")}
-        </span>
-      </div>
 
       {/* Header */}
       <header className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl px-4 md:px-6 py-3 md:py-4 flex items-center justify-between z-50">
         <a
-          href="#"
+          href="/"
           aria-label="Zur Startseite"
           className="flex items-center gap-3 cursor-pointer group"
         >
@@ -695,32 +683,26 @@ export default function Home() {
           aria-label="Hauptnavigation"
           className="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-500"
         >
-          <a href="#" className="hover:text-gray-900 transition-colors">
-            Features
+          <a href="/leistungen" className="hover:text-gray-900 transition-colors">
+            Leistungen
           </a>
-          <a href="#" className="hover:text-gray-900 transition-colors">
-            Lösungen
+          <a href="/referenzen" className="hover:text-gray-900 transition-colors">
+            Referenzen
           </a>
-          <a href="#" className="hover:text-gray-900 transition-colors">
-            Preise
-          </a>
-          <a href="#" className="hover:text-gray-900 transition-colors">
+          <a href="/ueber-uns" className="hover:text-gray-900 transition-colors">
             Über uns
+          </a>
+          <a href="/kontakt" className="hover:text-gray-900 transition-colors">
+            Kontakt
           </a>
         </nav>
 
         <div className="flex items-center gap-2 md:gap-4">
           <a
-            href="#"
-            className="hidden sm:block text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
-          >
-            Login
-          </a>
-          <a
-            href="#"
+            href="/kontakt"
             className="px-4 md:px-5 py-2 md:py-2.5 rounded-full bg-gray-900 text-white text-sm font-bold hover:bg-gray-800 transition-colors shadow-sm"
           >
-            Starten
+            Projekt starten
           </a>
         </div>
       </header>
@@ -747,16 +729,16 @@ export default function Home() {
             </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
-                href="#"
+                href="/kontakt"
                 className="w-full sm:w-auto px-8 py-3.5 rounded-full border-2 border-transparent bg-gray-900 text-white font-bold hover:bg-gray-800 transition-all shadow-lg hover:-translate-y-0.5 text-center"
               >
-                Jetzt starten
+                Projekt starten
               </a>
               <a
-                href="#"
+                href="/leistungen"
                 className="w-full sm:w-auto px-8 py-3.5 rounded-full border-2 border-gray-900 text-gray-900 bg-transparent font-bold hover:bg-gray-900 hover:text-white transition-all text-center"
               >
-                Demo buchen
+                Leistungen ansehen
               </a>
             </div>
           </div>

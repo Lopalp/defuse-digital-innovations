@@ -13,18 +13,15 @@ export default function ImpressumPage() {
     <>
       <Header />
       <main>
-        <section className="pt-32 pb-20 px-6">
+        <section className="pt-40 pb-24 px-6">
           <div className="max-w-3xl mx-auto">
-            <p className="text-red-500 text-sm font-bold uppercase tracking-[0.2em] mb-4">
-              Rechtliches
-            </p>
-            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-16">
+            <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight mb-20">
               Impressum
             </h1>
 
-            <div className="space-y-10 text-sm text-gray-600 leading-relaxed">
+            <div className="space-y-12 text-sm text-gray-500 leading-relaxed">
               <div>
-                <h2 className="text-lg font-extrabold text-gray-900 mb-3">
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
                   Angaben gemäß § 5 TMG
                 </h2>
                 <p>
@@ -39,7 +36,7 @@ export default function ImpressumPage() {
               </div>
 
               <div>
-                <h2 className="text-lg font-extrabold text-gray-900 mb-3">
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
                   Kontakt
                 </h2>
                 <p>
@@ -50,7 +47,7 @@ export default function ImpressumPage() {
               </div>
 
               <div>
-                <h2 className="text-lg font-extrabold text-gray-900 mb-3">
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
                   Umsatzsteuer-ID
                 </h2>
                 <p>
@@ -62,7 +59,7 @@ export default function ImpressumPage() {
               </div>
 
               <div>
-                <h2 className="text-lg font-extrabold text-gray-900 mb-3">
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
                   Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
                 </h2>
                 <p>
@@ -75,13 +72,13 @@ export default function ImpressumPage() {
               </div>
 
               <div>
-                <h2 className="text-lg font-extrabold text-gray-900 mb-3">
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
                   Haftungsausschluss
                 </h2>
                 <h3 className="font-bold text-gray-900 mb-2">
                   Haftung für Inhalte
                 </h3>
-                <p className="mb-4">
+                <p className="mb-6">
                   Die Inhalte unserer Seiten wurden mit größter Sorgfalt
                   erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität
                   der Inhalte können wir jedoch keine Gewähr übernehmen. Als
@@ -104,7 +101,7 @@ export default function ImpressumPage() {
               </div>
 
               <div>
-                <h2 className="text-lg font-extrabold text-gray-900 mb-3">
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
                   Urheberrecht
                 </h2>
                 <p>

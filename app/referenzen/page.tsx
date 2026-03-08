@@ -60,18 +60,15 @@ export default function ReferenzenPage() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 px-6">
+        <section className="pt-40 pb-24 px-6">
           <div className="max-w-4xl mx-auto">
-            <p className="text-red-500 text-sm font-bold uppercase tracking-[0.2em] mb-4">
-              Referenzen
-            </p>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.05]">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.05]">
               Projekte, die{" "}
-              <span className="font-serif italic font-normal text-gray-600">
+              <span className="font-serif italic font-normal text-gray-500">
                 sprechen
               </span>
             </h1>
-            <p className="mt-6 text-lg text-gray-500 max-w-2xl font-medium leading-relaxed">
+            <p className="mt-8 text-lg text-gray-500 max-w-2xl font-medium leading-relaxed">
               Jedes Projekt ist ein Beweis. Hier zeigen wir, was passiert, wenn
               Design, Technik und Strategie zusammenkommen.
             </p>
@@ -79,7 +76,7 @@ export default function ReferenzenPage() {
         </section>
 
         {/* Projects */}
-        <section className="pb-32 px-6">
+        <section className="pb-40 px-6">
           <div className="max-w-6xl mx-auto space-y-8">
             {PROJECTS.map((project, i) => (
               <div
@@ -102,10 +99,10 @@ export default function ReferenzenPage() {
                 {/* Content */}
                 <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
                   <div className="flex items-center gap-3 mb-4">
-                    <span className="text-xs font-bold text-red-500 uppercase tracking-[0.15em]">
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-[0.15em]">
                       {project.category}
                     </span>
-                    <span className="text-xs text-gray-400 font-medium">
+                    <span className="text-xs text-gray-300 font-medium">
                       {project.year}
                     </span>
                   </div>
@@ -136,7 +133,7 @@ export default function ReferenzenPage() {
         </section>
 
         {/* CTA */}
-        <section className="px-6 pb-20">
+        <section className="px-6 pb-24">
           <div className="max-w-4xl mx-auto bg-gray-900 rounded-3xl p-10 md:p-16 text-center">
             <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
               Ihr Projekt fehlt hier noch

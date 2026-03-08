@@ -9,7 +9,6 @@ const NAV = [
   { label: "Leistungen", href: "/leistungen" },
   { label: "Referenzen", href: "/referenzen" },
   { label: "Über uns", href: "/ueber-uns" },
-  { label: "Kontakt", href: "/kontakt" },
 ];
 
 export default function Header() {
@@ -53,9 +52,9 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <Link
             href="/kontakt"
-            className="hidden sm:inline-flex px-5 py-2.5 rounded-full bg-gray-900 text-white text-sm font-bold hover:bg-gray-800 transition-colors"
+            className="hidden sm:inline-flex px-5 py-2.5 rounded-full bg-gray-900 text-white text-sm font-bold hover:bg-gray-800 transition-colors shadow-sm"
           >
-            Projekt starten
+            Kontakt
           </Link>
           <button
             type="button"
@@ -88,7 +87,7 @@ export default function Header() {
               onClick={() => setMenuOpen(false)}
               className="mt-2 inline-flex items-center justify-center px-6 py-3 rounded-full bg-gray-900 text-white font-bold text-sm"
             >
-              Projekt starten
+              Kontakt
             </Link>
           </nav>
         </div>

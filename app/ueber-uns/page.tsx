@@ -54,19 +54,16 @@ export default function UeberUnsPage() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 px-6">
+        <section className="pt-40 pb-24 px-6">
           <div className="max-w-4xl mx-auto">
-            <p className="text-red-500 text-sm font-bold uppercase tracking-[0.2em] mb-4">
-              Über uns
-            </p>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.05]">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.05]">
               Wir machen das{" "}
-              <span className="font-serif italic font-normal text-gray-600">
+              <span className="font-serif italic font-normal text-gray-500">
                 Internet
               </span>{" "}
               besser
             </h1>
-            <p className="mt-6 text-lg text-gray-500 max-w-2xl font-medium leading-relaxed">
+            <p className="mt-8 text-lg text-gray-500 max-w-2xl font-medium leading-relaxed">
               defuse. ist eine Digitalagentur aus Chemnitz. Wir helfen
               Unternehmen, mit schnellen, sichtbaren und sicheren Websites zu
               wachsen — ohne Kompromisse.
@@ -75,9 +72,9 @@ export default function UeberUnsPage() {
         </section>
 
         {/* Image + Story */}
-        <section className="pb-24 px-6">
+        <section className="pb-32 px-6">
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden">
+            <div className="relative h-[400px] md:h-[520px] rounded-2xl overflow-hidden">
               <Image
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1740&auto=format&fit=crop"
                 alt="Team bei der Arbeit"
@@ -87,11 +84,11 @@ export default function UeberUnsPage() {
               />
             </div>
             <div>
-              <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-6">
+              <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-8 leading-tight">
                 Von Entwicklern gegründet,{" "}
                 <span className="text-gray-400">für Unternehmen gebaut.</span>
               </h2>
-              <div className="space-y-4 text-sm text-gray-500 leading-relaxed">
+              <div className="space-y-5 text-sm text-gray-500 leading-relaxed">
                 <p>
                   Wir haben defuse. gegründet, weil wir es leid waren, Websites
                   zu sehen, die langsam laden, schlecht ranken und nach sechs
@@ -113,21 +110,21 @@ export default function UeberUnsPage() {
         </section>
 
         {/* Values */}
-        <section className="pb-24 px-6">
+        <section className="pb-32 px-6">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-16 text-center">
+            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-20 text-center">
               Wofür wir stehen
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               {VALUES.map((value) => (
                 <div
                   key={value.number}
-                  className="p-8 rounded-2xl bg-white border border-gray-200/60"
+                  className="p-8 md:p-10 rounded-2xl bg-white border border-gray-200/60"
                 >
-                  <span className="text-xs font-bold text-red-500 tracking-[0.15em]">
+                  <span className="text-xs font-bold text-gray-300 tracking-[0.15em]">
                     {value.number}
                   </span>
-                  <h3 className="text-xl font-extrabold text-gray-900 mt-3 mb-3">
+                  <h3 className="text-xl font-extrabold text-gray-900 mt-4 mb-4">
                     {value.title}
                   </h3>
                   <p className="text-sm text-gray-500 leading-relaxed">
@@ -140,12 +137,12 @@ export default function UeberUnsPage() {
         </section>
 
         {/* Tech Stack */}
-        <section className="pb-24 px-6">
+        <section className="pb-32 px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
+            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6">
               Unser Stack
             </h2>
-            <p className="text-gray-500 font-medium mb-12 max-w-md mx-auto">
+            <p className="text-gray-500 font-medium mb-14 max-w-md mx-auto">
               Die Tools, mit denen wir jeden Tag arbeiten.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
@@ -162,7 +159,7 @@ export default function UeberUnsPage() {
         </section>
 
         {/* CTA */}
-        <section className="px-6 pb-20">
+        <section className="px-6 pb-24">
           <div className="max-w-4xl mx-auto bg-gray-900 rounded-3xl p-10 md:p-16 text-center">
             <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
               Lust, zusammenzuarbeiten?

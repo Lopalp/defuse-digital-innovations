@@ -34,18 +34,15 @@ export default function KontaktPage() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 px-6">
+        <section className="pt-40 pb-24 px-6">
           <div className="max-w-4xl mx-auto">
-            <p className="text-red-500 text-sm font-bold uppercase tracking-[0.2em] mb-4">
-              Kontakt
-            </p>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.05]">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.05]">
               Lassen Sie uns{" "}
-              <span className="font-serif italic font-normal text-gray-600">
+              <span className="font-serif italic font-normal text-gray-500">
                 reden
               </span>
             </h1>
-            <p className="mt-6 text-lg text-gray-500 max-w-2xl font-medium leading-relaxed">
+            <p className="mt-8 text-lg text-gray-500 max-w-2xl font-medium leading-relaxed">
               Erzählen Sie uns von Ihrem Projekt. Je mehr Details, desto besser
               — wir melden uns schnell zurück.
             </p>
@@ -53,8 +50,8 @@ export default function KontaktPage() {
         </section>
 
         {/* Form + Contact Info */}
-        <section className="pb-32 px-6">
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-12">
+        <section className="pb-40 px-6">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-16">
             {/* Form */}
             <div className="md:col-span-3">
               <form className="space-y-6">
@@ -62,7 +59,7 @@ export default function KontaktPage() {
                   <div>
                     <label
                       htmlFor="name"
-                      className="block text-xs font-bold text-gray-500 uppercase tracking-[0.1em] mb-2"
+                      className="block text-xs font-bold text-gray-400 uppercase tracking-[0.1em] mb-2"
                     >
                       Name
                     </label>
@@ -78,7 +75,7 @@ export default function KontaktPage() {
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-xs font-bold text-gray-500 uppercase tracking-[0.1em] mb-2"
+                      className="block text-xs font-bold text-gray-400 uppercase tracking-[0.1em] mb-2"
                     >
                       E-Mail
                     </label>
@@ -95,10 +92,10 @@ export default function KontaktPage() {
                 <div>
                   <label
                     htmlFor="company"
-                    className="block text-xs font-bold text-gray-500 uppercase tracking-[0.1em] mb-2"
+                    className="block text-xs font-bold text-gray-400 uppercase tracking-[0.1em] mb-2"
                   >
                     Unternehmen{" "}
-                    <span className="text-gray-400 normal-case tracking-normal">
+                    <span className="text-gray-300 normal-case tracking-normal">
                       (optional)
                     </span>
                   </label>
@@ -113,7 +110,7 @@ export default function KontaktPage() {
                 <div>
                   <label
                     htmlFor="budget"
-                    className="block text-xs font-bold text-gray-500 uppercase tracking-[0.1em] mb-2"
+                    className="block text-xs font-bold text-gray-400 uppercase tracking-[0.1em] mb-2"
                   >
                     Budget
                   </label>
@@ -132,7 +129,7 @@ export default function KontaktPage() {
                 <div>
                   <label
                     htmlFor="message"
-                    className="block text-xs font-bold text-gray-500 uppercase tracking-[0.1em] mb-2"
+                    className="block text-xs font-bold text-gray-400 uppercase tracking-[0.1em] mb-2"
                   >
                     Nachricht
                   </label>
@@ -156,16 +153,16 @@ export default function KontaktPage() {
 
             {/* Sidebar */}
             <div className="md:col-span-2">
-              <div className="space-y-8">
+              <div className="space-y-10">
                 {CONTACT_INFO.map((item) => {
                   const Icon = item.icon;
                   return (
                     <div key={item.label} className="flex gap-4">
                       <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
-                        <Icon className="w-4 h-4 text-gray-600" />
+                        <Icon className="w-4 h-4 text-gray-500" />
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-gray-400 uppercase tracking-[0.1em] mb-1">
+                        <p className="text-xs font-bold text-gray-300 uppercase tracking-[0.1em] mb-1">
                           {item.label}
                         </p>
                         {item.href ? (
@@ -186,7 +183,7 @@ export default function KontaktPage() {
                 })}
               </div>
 
-              <div className="mt-12 p-8 rounded-2xl bg-gray-900 text-white">
+              <div className="mt-16 p-8 md:p-10 rounded-2xl bg-gray-900 text-white">
                 <h3 className="text-lg font-extrabold mb-3">
                   Kostenloses Erstgespräch
                 </h3>
