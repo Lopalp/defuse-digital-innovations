@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="de">
       <body
-        className={`${jakarta.variable} ${playfair.variable} font-sans bg-gray-50 text-gray-900 antialiased overflow-hidden relative`}
+        className={`${jakarta.variable} ${playfair.variable} font-sans bg-gray-50 text-gray-900 antialiased`}
       >
         {children}
       </body>

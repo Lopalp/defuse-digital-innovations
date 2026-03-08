@@ -425,7 +425,7 @@ export default function Home() {
   const textOp = Math.max(0, (morph - 0.85) / 0.15);
 
   return (
-    <>
+    <div className="overflow-hidden relative h-screen">
       {/* ===== Card Overlays (Desktop) ===== */}
       {isMd && gridParamsRef.current.vw > 0 && allCards.map((card, i) => {
         const isFeature = i < 3;
@@ -830,6 +830,6 @@ export default function Home() {
           </div>
         </section>
       </div>
-    </>
+    </div>
   );
 }
