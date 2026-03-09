@@ -110,6 +110,42 @@ function RenderBlock({ block }: { block: BlogBlock }) {
           </pre>
         </div>
       );
+    case "table":
+      return (
+        <div className="my-4 overflow-x-auto rounded-2xl border border-gray-200/60">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-gray-50">
+                {block.headers.map((h, i) => (
+                  <th
+                    key={i}
+                    className="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-[0.05em]"
+                  >
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {block.rows.map((row, ri) => (
+                <tr
+                  key={ri}
+                  className="border-t border-gray-100"
+                >
+                  {row.map((cell, ci) => (
+                    <td
+                      key={ci}
+                      className="px-5 py-3 text-gray-600 font-medium leading-relaxed"
+                    >
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
   }
 }
 
