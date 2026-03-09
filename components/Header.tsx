@@ -8,6 +8,7 @@ import { Menu, X } from "lucide-react";
 const NAV = [
   { label: "Leistungen", href: "/leistungen" },
   { label: "Referenzen", href: "/referenzen" },
+  { label: "Blog", href: "/blog" },
   { label: "Über uns", href: "/ueber-uns" },
 ];
 

@@ -36,6 +36,7 @@ export default function Footer() {
               {[
                 { label: "Leistungen", href: "/leistungen" },
                 { label: "Referenzen", href: "/referenzen" },
+                { label: "Blog", href: "/blog" },
                 { label: "Über uns", href: "/ueber-uns" },
                 { label: "Kontakt", href: "/kontakt" },
               ].map((item) => (
