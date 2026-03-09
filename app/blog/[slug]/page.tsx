@@ -97,36 +97,36 @@ function RenderBlock({ block }: { block: BlogBlock }) {
   switch (block.type) {
     case "paragraph":
       return (
-        <p className="text-base text-gray-600 leading-[1.85] font-medium">
+        <p className="text-base md:text-lg text-gray-600 leading-[1.9] font-medium">
           {block.text}
         </p>
       );
     case "heading":
       return (
-        <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight mt-12 mb-3">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight mt-16 mb-4">
           {block.text}
         </h2>
       );
     case "subheading":
       return (
-        <h3 className="text-xl font-extrabold text-gray-900 tracking-tight mt-8 mb-2">
+        <h3 className="text-xl md:text-2xl font-extrabold text-gray-900 tracking-tight mt-10 mb-3">
           {block.text}
         </h3>
       );
     case "image":
       return (
-        <figure className="my-6">
-          <div className="relative h-[300px] md:h-[400px] rounded-2xl overflow-hidden">
+        <figure className="my-10 -mx-6 md:-mx-16">
+          <div className="relative h-[300px] md:h-[450px] rounded-2xl overflow-hidden">
             <Image
               src={block.src}
               alt={block.alt}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, 720px"
+              sizes="(max-width: 768px) 100vw, 900px"
             />
           </div>
           {block.caption && (
-            <figcaption className="mt-3 text-center text-xs text-gray-400 font-medium">
+            <figcaption className="mt-4 text-center text-xs text-gray-400 font-medium px-6">
               {block.caption}
             </figcaption>
           )}
@@ -134,12 +134,12 @@ function RenderBlock({ block }: { block: BlogBlock }) {
       );
     case "quote":
       return (
-        <blockquote className="my-8 pl-6 border-l-2 border-gray-900">
-          <p className="text-lg font-serif italic text-gray-700 leading-relaxed">
+        <blockquote className="my-12 py-8 pl-8 border-l-[3px] border-gray-900">
+          <p className="text-xl md:text-2xl font-extrabold text-gray-900 leading-snug tracking-tight">
             {block.text}
           </p>
           {block.author && (
-            <cite className="block mt-3 text-sm text-gray-400 not-italic font-medium">
+            <cite className="block mt-4 text-sm text-gray-400 not-italic font-medium">
               — {block.author}
             </cite>
           )}
@@ -147,13 +147,15 @@ function RenderBlock({ block }: { block: BlogBlock }) {
       );
     case "list":
       return (
-        <ul className="space-y-3 my-4">
+        <ul className="space-y-4 my-6">
           {block.items.map((item, i) => (
             <li
               key={i}
-              className="flex gap-3 text-base text-gray-600 font-medium leading-relaxed"
+              className="flex gap-4 text-base md:text-lg text-gray-600 font-medium leading-relaxed"
             >
-              <span className="text-gray-300 mt-0.5 shrink-0">—</span>
+              <span className="text-gray-900 mt-0.5 shrink-0 font-extrabold text-sm">
+                {String(i + 1).padStart(2, "0")}
+              </span>
               <span>{item}</span>
             </li>
           ))}
@@ -161,16 +163,16 @@ function RenderBlock({ block }: { block: BlogBlock }) {
       );
     case "code":
       return (
-        <div className="my-6 rounded-2xl overflow-hidden bg-gray-950">
-          <div className="flex items-center gap-2 px-5 py-3 border-b border-white/5">
-            <div className="w-3 h-3 rounded-full bg-white/10" />
-            <div className="w-3 h-3 rounded-full bg-white/10" />
-            <div className="w-3 h-3 rounded-full bg-white/10" />
-            <span className="ml-auto text-xs text-gray-500 font-mono">
+        <div className="my-8 rounded-2xl overflow-hidden bg-gray-950 -mx-6 md:-mx-16">
+          <div className="flex items-center gap-2 px-6 py-3.5 border-b border-white/5">
+            <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
+            <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
+            <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
+            <span className="ml-auto text-[10px] text-gray-600 font-mono uppercase tracking-wider">
               {block.language}
             </span>
           </div>
-          <pre className="p-5 overflow-x-auto">
+          <pre className="p-6 overflow-x-auto">
             <code className="text-sm text-gray-300 font-mono leading-relaxed">
               {block.code}
             </code>
@@ -179,14 +181,14 @@ function RenderBlock({ block }: { block: BlogBlock }) {
       );
     case "table":
       return (
-        <div className="my-6 overflow-x-auto rounded-2xl border border-gray-200/60 bg-white">
+        <div className="my-8 overflow-x-auto rounded-2xl bg-gray-950 -mx-6 md:-mx-16">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gray-50/80">
+              <tr>
                 {block.headers.map((h, i) => (
                   <th
                     key={i}
-                    className="px-5 py-3.5 text-left text-xs font-bold text-gray-500 uppercase tracking-[0.05em] whitespace-nowrap"
+                    className="px-6 py-4 text-left text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em] whitespace-nowrap border-b border-white/5"
                   >
                     {h}
                   </th>
@@ -195,11 +197,11 @@ function RenderBlock({ block }: { block: BlogBlock }) {
             </thead>
             <tbody>
               {block.rows.map((row, ri) => (
-                <tr key={ri} className="border-t border-gray-100">
+                <tr key={ri} className="border-t border-white/5">
                   {row.map((cell, ci) => (
                     <td
                       key={ci}
-                      className="px-5 py-3.5 text-gray-600 font-medium leading-relaxed"
+                      className="px-6 py-4 text-gray-400 font-medium leading-relaxed"
                     >
                       {cell}
                     </td>
@@ -225,7 +227,6 @@ export default async function BlogPostPage({ params }: Props) {
   const nextPost = sortedPosts[currentIndex + 1];
   const prevPost = sortedPosts[currentIndex - 1];
 
-  // Related posts (same category, exclude current)
   const related = BLOG_POSTS.filter(
     (p) => p.category === post.category && p.slug !== slug
   ).slice(0, 3);
@@ -236,73 +237,78 @@ export default async function BlogPostPage({ params }: Props) {
       <BreadcrumbJsonLd post={post} />
       <Header />
       <main>
-        {/* Breadcrumb */}
-        <nav
-          aria-label="Breadcrumb"
-          className="pt-28 pb-4 px-6"
-        >
-          <div className="max-w-3xl mx-auto">
-            <ol className="flex items-center gap-2 text-xs text-gray-400 font-medium">
-              <li>
-                <Link href="/" className="hover:text-gray-900 transition-colors">
-                  Startseite
-                </Link>
-              </li>
-              <li aria-hidden="true">/</li>
-              <li>
-                <Link href="/blog" className="hover:text-gray-900 transition-colors">
-                  Blog
-                </Link>
-              </li>
-              <li aria-hidden="true">/</li>
-              <li className="text-gray-600 truncate max-w-[200px]">
-                {post.title}
-              </li>
-            </ol>
-          </div>
-        </nav>
+        {/* Cover Image — full-bleed hero like homepage cards */}
+        <section className="pt-20">
+          <div className="relative h-[60vh] md:h-[75vh]">
+            <Image
+              src={post.image}
+              alt={post.title}
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
 
-        {/* Hero */}
-        <section className="pt-4 pb-10 px-6">
-          <div className="max-w-3xl mx-auto">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="px-3 py-1 bg-gray-900 text-white text-xs font-bold rounded-full">
-                {post.category}
-              </span>
-              <time dateTime={post.date} className="text-xs text-gray-400 font-medium">
-                {formatDate(post.date)}
-              </time>
-              <span className="text-xs text-gray-400 font-medium">
-                {post.readTime}
-              </span>
+            {/* Breadcrumb on image */}
+            <nav
+              aria-label="Breadcrumb"
+              className="absolute top-8 left-0 right-0 px-6"
+            >
+              <div className="max-w-3xl mx-auto">
+                <ol className="flex items-center gap-2 text-[10px] text-white/50 font-medium">
+                  <li>
+                    <Link href="/" className="hover:text-white transition-colors">
+                      Startseite
+                    </Link>
+                  </li>
+                  <li aria-hidden="true">/</li>
+                  <li>
+                    <Link href="/blog" className="hover:text-white transition-colors">
+                      Blog
+                    </Link>
+                  </li>
+                  <li aria-hidden="true">/</li>
+                  <li className="text-white/70 truncate max-w-[200px]">
+                    {post.title}
+                  </li>
+                </ol>
+              </div>
+            </nav>
+
+            {/* Title on image */}
+            <div className="absolute bottom-0 left-0 right-0 p-8 md:p-14">
+              <div className="max-w-3xl mx-auto">
+                <div className="flex items-center gap-3 mb-5">
+                  <span className="px-3 py-1 bg-white/15 backdrop-blur-sm text-white text-xs font-bold rounded-full">
+                    {post.category}
+                  </span>
+                  <time dateTime={post.date} className="text-xs text-white/50 font-medium">
+                    {formatDate(post.date)}
+                  </time>
+                  <span className="text-xs text-white/50 font-medium">
+                    {post.readTime}
+                  </span>
+                </div>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05] text-white max-w-3xl">
+                  {post.title}
+                </h1>
+              </div>
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] mb-8">
-              {post.title}
-            </h1>
-            <p className="text-lg text-gray-500 font-medium leading-relaxed">
+          </div>
+        </section>
+
+        {/* Excerpt */}
+        <section className="pt-14 pb-6 px-6">
+          <div className="max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-gray-500 font-medium leading-relaxed">
               {post.excerpt}
             </p>
           </div>
         </section>
 
-        {/* Cover Image */}
-        <section className="pb-12 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="relative h-[280px] md:h-[480px] rounded-2xl overflow-hidden">
-              <Image
-                src={post.image}
-                alt={post.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 900px"
-                priority
-              />
-            </div>
-          </div>
-        </section>
-
         {/* Content */}
-        <article className="pb-16 px-6">
+        <article className="pb-20 px-6">
           <div className="max-w-3xl mx-auto space-y-5">
             {post.content.map((block, i) => (
               <RenderBlock key={i} block={block} />
@@ -311,13 +317,13 @@ export default async function BlogPostPage({ params }: Props) {
         </article>
 
         {/* Author */}
-        <section className="px-6 pb-16">
-          <div className="max-w-3xl mx-auto border-t border-gray-200/60 pt-10">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gray-900 flex items-center justify-center shrink-0">
+        <section className="px-6 pb-20">
+          <div className="max-w-3xl mx-auto border-t border-gray-200/60 pt-12">
+            <div className="flex items-center gap-5">
+              <div className="w-14 h-14 rounded-full bg-gray-900 flex items-center justify-center shrink-0">
                 <svg
                   aria-hidden="true"
-                  className="w-5 h-5 text-white"
+                  className="w-6 h-6 text-white"
                   viewBox="0 0 32 32"
                   fill="none"
                 >
@@ -328,10 +334,10 @@ export default async function BlogPostPage({ params }: Props) {
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-extrabold text-gray-900">
+                <p className="text-base font-extrabold text-gray-900 tracking-tight">
                   defuse. digital
                 </p>
-                <p className="text-xs text-gray-500 font-medium">
+                <p className="text-sm text-gray-500 font-medium">
                   Digitalagentur aus Chemnitz — Webdesign, SEO & Deep Tech
                 </p>
               </div>
@@ -339,36 +345,41 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         </section>
 
-        {/* Related Posts */}
+        {/* Related Posts — image-forward cards matching overview */}
         {related.length > 0 && (
-          <section className="px-6 pb-16">
+          <section className="px-6 pb-20">
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-2xl font-extrabold tracking-tight mb-8">
-                Weitere Artikel zu {post.category}
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.25em] mb-6">
+                Weitere Artikel
+              </p>
+              <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-10">
+                Mehr zu {post.category}
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {related.map((r) => (
                   <article key={r.slug}>
                     <Link
                       href={`/blog/${r.slug}`}
-                      className="group block rounded-2xl overflow-hidden bg-white border border-gray-200/60 hover:border-gray-300 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-full"
+                      className="group block relative rounded-2xl overflow-hidden h-[360px]"
                     >
-                      <div className="relative h-40 overflow-hidden">
-                        <Image
-                          src={r.image}
-                          alt={r.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          sizes="(max-width: 768px) 100vw, 33vw"
-                        />
-                      </div>
-                      <div className="p-5">
-                        <h3 className="text-sm font-extrabold text-gray-900 tracking-tight mb-2 leading-snug group-hover:text-gray-700 transition-colors">
+                      <Image
+                        src={r.image}
+                        alt={r.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <span className="px-2.5 py-0.5 bg-white/15 backdrop-blur-sm text-white text-[10px] font-bold rounded-full uppercase tracking-wider mb-3 inline-block">
+                          {r.category}
+                        </span>
+                        <h3 className="text-lg font-bold text-white tracking-tight mb-2 leading-snug">
                           {r.title}
                         </h3>
                         <time
                           dateTime={r.date}
-                          className="text-xs text-gray-400 font-medium"
+                          className="text-[10px] text-white/40 font-medium"
                         >
                           {formatDate(r.date)}
                         </time>
@@ -382,18 +393,18 @@ export default async function BlogPostPage({ params }: Props) {
         )}
 
         {/* Post Navigation */}
-        <section className="px-6 pb-16">
-          <div className="max-w-3xl mx-auto border-t border-gray-200/60 pt-10">
-            <div className="flex flex-col sm:flex-row justify-between gap-8">
+        <section className="px-6 pb-20">
+          <div className="max-w-3xl mx-auto border-t border-gray-200/60 pt-12">
+            <div className="flex flex-col sm:flex-row justify-between gap-10">
               {prevPost ? (
                 <Link
                   href={`/blog/${prevPost.slug}`}
                   className="group flex-1"
                 >
-                  <span className="text-xs font-bold text-gray-300 uppercase tracking-[0.1em] mb-2 block">
-                    Neuerer Artikel
+                  <span className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em] mb-3">
+                    <ArrowLeft className="w-3 h-3" /> Neuerer Artikel
                   </span>
-                  <span className="text-sm font-extrabold text-gray-900 group-hover:text-gray-600 transition-colors leading-snug">
+                  <span className="text-base font-extrabold text-gray-900 group-hover:text-gray-600 transition-colors leading-snug tracking-tight">
                     {prevPost.title}
                   </span>
                 </Link>
@@ -405,10 +416,10 @@ export default async function BlogPostPage({ params }: Props) {
                   href={`/blog/${nextPost.slug}`}
                   className="group flex-1 text-right"
                 >
-                  <span className="text-xs font-bold text-gray-300 uppercase tracking-[0.1em] mb-2 block">
-                    Älterer Artikel
+                  <span className="flex items-center justify-end gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em] mb-3">
+                    Älterer Artikel <ArrowRight className="w-3 h-3" />
                   </span>
-                  <span className="text-sm font-extrabold text-gray-900 group-hover:text-gray-600 transition-colors leading-snug">
+                  <span className="text-base font-extrabold text-gray-900 group-hover:text-gray-600 transition-colors leading-snug tracking-tight">
                     {nextPost.title}
                   </span>
                 </Link>
@@ -419,20 +430,23 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* CTA */}
         <section className="px-6 pb-24">
-          <div className="max-w-3xl mx-auto bg-gray-900 rounded-3xl p-10 md:p-16 text-center">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
-              Bereit loszulegen?
-            </h2>
-            <p className="text-gray-400 font-medium mb-8 max-w-md mx-auto">
-              Wir setzen um, worüber andere nur bloggen. Digitalagentur aus
-              Chemnitz für ganz Sachsen.
-            </p>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center px-8 py-4 rounded-full bg-white text-gray-900 font-bold text-sm hover:bg-gray-100 transition-colors"
-            >
-              Projekt besprechen
-            </Link>
+          <div className="max-w-6xl mx-auto relative rounded-3xl overflow-hidden h-[400px] flex items-center justify-center">
+            <div className="absolute inset-0 bg-gray-950" />
+            <div className="relative z-10 text-center px-6">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-5">
+                Bereit loszulegen?
+              </h2>
+              <p className="text-gray-500 font-medium mb-8 max-w-md mx-auto">
+                Wir setzen um, worüber andere nur bloggen. Digitalagentur aus
+                Chemnitz für ganz Sachsen.
+              </p>
+              <Link
+                href="/kontakt"
+                className="inline-flex items-center px-8 py-4 rounded-full bg-white text-gray-900 font-bold text-sm hover:bg-gray-100 transition-colors"
+              >
+                Projekt starten
+              </Link>
+            </div>
           </div>
         </section>
       </main>
