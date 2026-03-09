@@ -97,7 +97,7 @@ function RenderBlock({ block }: { block: BlogBlock }) {
   switch (block.type) {
     case "paragraph":
       return (
-        <p className="text-base md:text-lg text-gray-600 leading-[1.9] font-medium">
+        <p className="text-base md:text-[17px] text-gray-600 leading-[1.9] font-medium">
           {block.text}
         </p>
       );
@@ -151,7 +151,7 @@ function RenderBlock({ block }: { block: BlogBlock }) {
           {block.items.map((item, i) => (
             <li
               key={i}
-              className="flex gap-4 text-base md:text-lg text-gray-600 font-medium leading-relaxed"
+              className="flex gap-4 text-base md:text-[17px] text-gray-600 font-medium leading-relaxed"
             >
               <span className="text-gray-900 mt-0.5 shrink-0 font-extrabold text-sm">
                 {String(i + 1).padStart(2, "0")}
@@ -237,73 +237,65 @@ export default async function BlogPostPage({ params }: Props) {
       <BreadcrumbJsonLd post={post} />
       <Header />
       <main>
-        {/* Cover Image — full-bleed hero like homepage cards */}
-        <section className="pt-20">
-          <div className="relative h-[60vh] md:h-[75vh]">
-            <Image
-              src={post.image}
-              alt={post.title}
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
+        {/* Breadcrumb */}
+        <nav aria-label="Breadcrumb" className="pt-28 pb-6 px-6">
+          <div className="max-w-4xl mx-auto">
+            <ol className="flex items-center gap-2 text-xs text-gray-400 font-medium">
+              <li>
+                <Link href="/" className="hover:text-gray-900 transition-colors">
+                  Startseite
+                </Link>
+              </li>
+              <li aria-hidden="true" className="text-gray-300">/</li>
+              <li>
+                <Link href="/blog" className="hover:text-gray-900 transition-colors">
+                  Blog
+                </Link>
+              </li>
+              <li aria-hidden="true" className="text-gray-300">/</li>
+              <li className="text-gray-600 truncate max-w-[250px]">
+                {post.title}
+              </li>
+            </ol>
+          </div>
+        </nav>
 
-            {/* Breadcrumb on image */}
-            <nav
-              aria-label="Breadcrumb"
-              className="absolute top-8 left-0 right-0 px-6"
-            >
-              <div className="max-w-3xl mx-auto">
-                <ol className="flex items-center gap-2 text-[10px] text-white/50 font-medium">
-                  <li>
-                    <Link href="/" className="hover:text-white transition-colors">
-                      Startseite
-                    </Link>
-                  </li>
-                  <li aria-hidden="true">/</li>
-                  <li>
-                    <Link href="/blog" className="hover:text-white transition-colors">
-                      Blog
-                    </Link>
-                  </li>
-                  <li aria-hidden="true">/</li>
-                  <li className="text-white/70 truncate max-w-[200px]">
-                    {post.title}
-                  </li>
-                </ol>
-              </div>
-            </nav>
-
-            {/* Title on image */}
-            <div className="absolute bottom-0 left-0 right-0 p-8 md:p-14">
-              <div className="max-w-3xl mx-auto">
-                <div className="flex items-center gap-3 mb-5">
-                  <span className="px-3 py-1 bg-white/15 backdrop-blur-sm text-white text-xs font-bold rounded-full">
-                    {post.category}
-                  </span>
-                  <time dateTime={post.date} className="text-xs text-white/50 font-medium">
-                    {formatDate(post.date)}
-                  </time>
-                  <span className="text-xs text-white/50 font-medium">
-                    {post.readTime}
-                  </span>
-                </div>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05] text-white max-w-3xl">
-                  {post.title}
-                </h1>
-              </div>
+        {/* Hero — clean typography on white, like homepage hero */}
+        <section className="pb-12 px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-center gap-4 mb-8">
+              <span className="px-3.5 py-1.5 bg-gray-900 text-white text-[10px] font-bold rounded-full uppercase tracking-wider">
+                {post.category}
+              </span>
+              <time dateTime={post.date} className="text-sm text-gray-400 font-medium">
+                {formatDate(post.date)}
+              </time>
+              <span className="text-sm text-gray-400 font-medium">
+                {post.readTime}
+              </span>
             </div>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.0] mb-10">
+              {post.title}
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-500 font-medium leading-relaxed max-w-2xl">
+              {post.excerpt}
+            </p>
           </div>
         </section>
 
-        {/* Excerpt */}
-        <section className="pt-14 pb-6 px-6">
-          <div className="max-w-3xl mx-auto">
-            <p className="text-xl md:text-2xl text-gray-500 font-medium leading-relaxed">
-              {post.excerpt}
-            </p>
+        {/* Cover Image — edge-to-edge within container */}
+        <section className="pb-16 px-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="relative h-[300px] sm:h-[400px] md:h-[520px] rounded-2xl overflow-hidden">
+              <Image
+                src={post.image}
+                alt={post.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 1152px"
+                priority
+              />
+            </div>
           </div>
         </section>
 
@@ -345,45 +337,49 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         </section>
 
-        {/* Related Posts — image-forward cards matching overview */}
+        {/* Related Posts */}
         {related.length > 0 && (
           <section className="px-6 pb-20">
             <div className="max-w-6xl mx-auto">
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.25em] mb-6">
-                Weitere Artikel
+                Weiterlesen
               </p>
               <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-10">
                 Mehr zu {post.category}
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {related.map((r) => (
                   <article key={r.slug}>
                     <Link
                       href={`/blog/${r.slug}`}
-                      className="group block relative rounded-2xl overflow-hidden h-[360px]"
+                      className="group block"
                     >
-                      <Image
-                        src={r.image}
-                        alt={r.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                      <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <span className="px-2.5 py-0.5 bg-white/15 backdrop-blur-sm text-white text-[10px] font-bold rounded-full uppercase tracking-wider mb-3 inline-block">
+                      <div className="relative h-[240px] rounded-2xl overflow-hidden mb-5">
+                        <Image
+                          src={r.image}
+                          alt={r.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
+                      <div className="flex items-center gap-3 mb-3">
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.1em]">
                           {r.category}
                         </span>
-                        <h3 className="text-lg font-bold text-white tracking-tight mb-2 leading-snug">
-                          {r.title}
-                        </h3>
-                        <time
-                          dateTime={r.date}
-                          className="text-[10px] text-white/40 font-medium"
-                        >
-                          {formatDate(r.date)}
-                        </time>
+                        <span className="text-[10px] text-gray-300 font-medium">
+                          {r.readTime}
+                        </span>
                       </div>
+                      <h3 className="text-lg font-extrabold text-gray-900 tracking-tight mb-2 leading-snug group-hover:text-gray-600 transition-colors">
+                        {r.title}
+                      </h3>
+                      <time
+                        dateTime={r.date}
+                        className="text-xs text-gray-400 font-medium"
+                      >
+                        {formatDate(r.date)}
+                      </time>
                     </Link>
                   </article>
                 ))}
@@ -404,7 +400,7 @@ export default async function BlogPostPage({ params }: Props) {
                   <span className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em] mb-3">
                     <ArrowLeft className="w-3 h-3" /> Neuerer Artikel
                   </span>
-                  <span className="text-base font-extrabold text-gray-900 group-hover:text-gray-600 transition-colors leading-snug tracking-tight">
+                  <span className="text-base font-extrabold text-gray-900 group-hover:text-gray-600 transition-colors leading-snug tracking-tight block">
                     {prevPost.title}
                   </span>
                 </Link>
@@ -419,7 +415,7 @@ export default async function BlogPostPage({ params }: Props) {
                   <span className="flex items-center justify-end gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em] mb-3">
                     Älterer Artikel <ArrowRight className="w-3 h-3" />
                   </span>
-                  <span className="text-base font-extrabold text-gray-900 group-hover:text-gray-600 transition-colors leading-snug tracking-tight">
+                  <span className="text-base font-extrabold text-gray-900 group-hover:text-gray-600 transition-colors leading-snug tracking-tight block">
                     {nextPost.title}
                   </span>
                 </Link>
@@ -430,23 +426,20 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* CTA */}
         <section className="px-6 pb-24">
-          <div className="max-w-6xl mx-auto relative rounded-3xl overflow-hidden h-[400px] flex items-center justify-center">
-            <div className="absolute inset-0 bg-gray-950" />
-            <div className="relative z-10 text-center px-6">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-5">
-                Bereit loszulegen?
-              </h2>
-              <p className="text-gray-500 font-medium mb-8 max-w-md mx-auto">
-                Wir setzen um, worüber andere nur bloggen. Digitalagentur aus
-                Chemnitz für ganz Sachsen.
-              </p>
-              <Link
-                href="/kontakt"
-                className="inline-flex items-center px-8 py-4 rounded-full bg-white text-gray-900 font-bold text-sm hover:bg-gray-100 transition-colors"
-              >
-                Projekt starten
-              </Link>
-            </div>
+          <div className="max-w-6xl mx-auto bg-gray-950 rounded-3xl p-12 md:p-20 text-center">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-5">
+              Bereit loszulegen?
+            </h2>
+            <p className="text-gray-500 font-medium mb-10 max-w-md mx-auto">
+              Wir setzen um, worüber andere nur bloggen. Digitalagentur aus
+              Chemnitz für ganz Sachsen.
+            </p>
+            <Link
+              href="/kontakt"
+              className="inline-flex items-center px-8 py-4 rounded-full bg-white text-gray-900 font-bold text-sm hover:bg-gray-100 transition-colors"
+            >
+              Projekt starten
+            </Link>
           </div>
         </section>
       </main>
