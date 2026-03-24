@@ -50,7 +50,7 @@ const allCards = [
   },
   {
     icon: ShieldCheck,
-    title: "Unsere Produkte",
+    title: "Eigene Produkte",
     description:
       "Plauderbot und Lumera.ai sind proprietäre Lösungen, die wir selbst entwickeln und betreiben — bewährte Technologie aus eigener Hand, die direkt in Ihr Projekt integriert werden kann.",
     image: IMG_2,
@@ -58,36 +58,36 @@ const allCards = [
   {
     separator: true,
     icon: Zap,
-    title: "PROJECTS",
+    title: "PROJEKTE",
     description: "",
     image: "",
   },
   {
     icon: TrendingUp,
-    title: "Growth Analytics",
+    title: "Bergpension Laasen Perle",
     description:
-      "Datengetriebene Insights für nachhaltiges und skalierbares Wachstum.",
+      "Kompletter Website-Relaunch für eine Pension in der Sächsischen Schweiz. Lighthouse 98, Ladezeit unter 1 Sekunde.",
     image: IMG_3,
   },
   {
     icon: Hexagon,
-    title: "Brand Identity",
+    title: "Lucram Media",
     description:
-      "Einzigartiges Branding, das deine Marke unverwechselbar macht.",
+      "Corporate Website mit scroll-basiertem Storytelling und Custom-Animationen. Minimalistisches Design, maximale Wirkung.",
     image: IMG_4,
   },
   {
     icon: Users,
-    title: "Team Scaling",
+    title: "TechStart GmbH",
     description:
-      "Skaliere dein Team effizient mit den richtigen Prozessen und Tools.",
+      "SaaS-Landingpage mit Sanity-gesteuertem Blog und automatisierter Lead-Generierung. Conversion Rate +40%.",
     image: IMG_1,
   },
   {
     icon: Square,
-    title: "Office Culture",
+    title: "Handwerk Schuster",
     description:
-      "Arbeitskultur, die Top-Talente anzieht und langfristig bindet.",
+      "Von WordPress zu Next.js — Ladezeit von 4,2s auf 0,8s. Top-3-Ranking für lokale Suchbegriffe.",
     image: IMG_3,
   },
 ];
@@ -770,10 +770,9 @@ export default function Home() {
                 }}
               >
                 <div className="text-white font-extrabold text-center" style={{ fontSize: 'min(14rem, 35vw)', lineHeight: 0.8, letterSpacing: '-0.04em' }}>
-                  <div>PR</div>
-                  <div>OJ</div>
-                  <div>EC</div>
-                  <div>TS</div>
+                  <div>PRO</div>
+                  <div>JEK</div>
+                  <div>TE</div>
                 </div>
               </div>
             ) : (
@@ -916,15 +915,14 @@ export default function Home() {
         <section className="relative h-screen snap-start flex flex-col items-center justify-center px-4 text-center">
           <div className="relative z-10" style={{ opacity: menuOpen ? 0 : heroTextOp, transition: "opacity 0.4s ease" }}>
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-gray-900 max-w-4xl leading-tight">
-              We{" "}
+              Wir bauen{" "}
               <span className="font-serif italic font-normal text-4xl sm:text-6xl md:text-7xl mx-1 text-gray-800">
-                help
+                digitale
               </span>{" "}
-              you grow
+              Infrastruktur
             </h1>
             <p className="mt-4 md:mt-5 text-base sm:text-lg md:text-xl text-gray-700 w-[95%] sm:w-[80%] lg:w-1/2 mx-auto whitespace-nowrap overflow-hidden text-ellipsis font-medium">
-              Die perfekte Infrastruktur, um dein Business auf das nächste Level
-              zu skalieren.
+              Websites, Plattformen und Deep Tech — für Unternehmen, die mehr erwarten.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
@@ -948,7 +946,7 @@ export default function Home() {
             style={{ bottom: "44px", opacity: menuOpen ? 0 : undefined, transition: "opacity 0.4s ease" }}
           >
             <h2 className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-[0.25em] mb-3">
-              Trusted by
+              Vertraut von
             </h2>
             <div className="marquee-wrap relative w-full overflow-hidden flex items-center">
               <div
