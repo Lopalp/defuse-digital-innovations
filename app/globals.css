@@ -3,6 +3,7 @@
 @theme {
   --font-sans: var(--font-jakarta);
   --font-serif: var(--font-playfair);
+  --font-display: var(--font-morgelora);
 }
 
 @keyframes marquee {

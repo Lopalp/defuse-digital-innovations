@@ -161,7 +161,7 @@ export default function KontaktPage() {
             <Reveal direction="up" distance={60} duration={1} delay={0.1}>
               <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.05]">
                 Lassen Sie uns{" "}
-                <span className="font-serif italic font-normal text-gray-500">
+                <span className="font-display italic font-normal text-gray-500">
                   reden
                 </span>
               </h1>
@@ -398,7 +398,7 @@ export default function KontaktPage() {
               </p>
               <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6">
                 Lieber direkt{" "}
-                <span className="font-serif italic font-normal text-gray-500">
+                <span className="font-display italic font-normal text-gray-500">
                   schreiben
                 </span>
                 ?

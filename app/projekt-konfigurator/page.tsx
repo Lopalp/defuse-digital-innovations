@@ -665,7 +665,7 @@ export default function ProjektKonfigurator() {
               <Reveal direction="up" distance={60} duration={1} delay={0.1}>
                 <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.05]">
                   Ihr Projekt.{" "}
-                  <span className="font-serif italic font-normal text-gray-500">
+                  <span className="font-display italic font-normal text-gray-500">
                     Ihre Vision.
                   </span>
                 </h1>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -13,6 +14,15 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   style: "italic",
   weight: ["400"],
+});
+
+const morgelora = localFont({
+  src: [
+    { path: "../public/morgelora.otf", weight: "400", style: "normal" },
+    { path: "../public/morgelora-italic.otf", weight: "400", style: "italic" },
+  ],
+  variable: "--font-morgelora",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -143,7 +153,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${jakarta.variable} ${playfair.variable} font-sans bg-gray-50 text-gray-900 antialiased`}
+        className={`${jakarta.variable} ${playfair.variable} ${morgelora.variable} font-sans bg-gray-50 text-gray-900 antialiased`}
       >
         {children}
       </body>

@@ -168,7 +168,7 @@ export default function UeberUnsPage() {
             <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight leading-[0.95] max-w-4xl">
               Technologie,
               <br />
-              <span className="font-serif italic font-normal text-gray-400">die bleibt</span>
+              <span className="font-display italic font-normal text-gray-400">die bleibt</span>
             </h1>
             <p className="mt-8 text-base md:text-lg text-gray-500 max-w-lg mx-auto font-medium leading-relaxed">
               Studierte Informatiker aus Sachsen. Nachhaltige Lösungen. Langfristige Partnerschaften.
@@ -405,7 +405,7 @@ export default function UeberUnsPage() {
             <h2 className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight leading-[0.95] max-w-3xl mx-auto text-white">
               Lassen Sie uns
               <br />
-              <span className="font-serif italic font-normal text-gray-500">gemeinsam</span>
+              <span className="font-display italic font-normal text-gray-500">gemeinsam</span>
               <br />
               wachsen
             </h2>

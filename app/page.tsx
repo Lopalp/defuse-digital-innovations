@@ -916,7 +916,7 @@ export default function Home() {
           <div className="relative z-10" style={{ opacity: menuOpen ? 0 : heroTextOp, transition: "opacity 0.4s ease" }}>
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-gray-900 max-w-4xl leading-tight">
               Wir bauen{" "}
-              <span className="font-serif italic font-normal text-4xl sm:text-6xl md:text-7xl mx-1 text-gray-800">
+              <span className="font-display italic font-normal text-4xl sm:text-6xl md:text-7xl mx-1 text-gray-800">
                 digitale
               </span>{" "}
               Infrastruktur

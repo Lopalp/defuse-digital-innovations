@@ -215,7 +215,7 @@ export default function LeistungenPage() {
               <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] font-extrabold text-white tracking-tighter leading-[0.9]">
                 Digital.
                 <br />
-                <span className="font-serif italic font-normal">Präzise.</span>
+                <span className="font-display italic font-normal">Präzise.</span>
               </h1>
               <p className="mt-8 text-lg md:text-xl text-white/60 max-w-xl mx-auto font-medium leading-relaxed">
                 Websites, SEO & Deep Tech — alles aus einer Hand.
@@ -381,7 +381,7 @@ export default function LeistungenPage() {
                       >
                         {isLast ? (
                           <>
-                            <span className="font-serif italic font-normal">Wirkung</span>{" "}
+                            <span className="font-display italic font-normal">Wirkung</span>{" "}
                             statt Output.
                           </>
                         ) : (
@@ -498,7 +498,7 @@ export default function LeistungenPage() {
                 <div>
                   <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.05] mb-3">
                     Websites, die{" "}
-                    <span className="font-serif italic font-normal">verkaufen.</span>
+                    <span className="font-display italic font-normal">verkaufen.</span>
                   </h2>
                   <p className="text-lg text-gray-400 font-medium mb-8">
                     Nicht nur schön — strategisch.
@@ -953,7 +953,7 @@ export default function LeistungenPage() {
             <Reveal direction="up" delay={0.1}>
               <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tighter leading-[0.95]">
                 Lassen Sie uns Ihr{" "}
-                <span className="font-serif italic font-normal">nächstes Projekt</span>
+                <span className="font-display italic font-normal">nächstes Projekt</span>
                 {" "}starten.
               </h2>
             </Reveal>
