@@ -3,27 +3,25 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import {
-  Triangle,
-  Circle,
-  Hexagon,
-  Square,
-  Octagon,
   Zap,
   ShieldCheck,
   BarChart3,
   TrendingUp,
+  Hexagon,
   Users,
+  Square,
 } from "lucide-react";
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1772752021241-2d922cadbab1?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 const partners = [
-  { icon: Triangle, name: "Partner 1" },
-  { icon: Circle, name: "Partner 2" },
-  { icon: Hexagon, name: "Partner 3" },
-  { icon: Square, name: "Partner 4" },
-  { icon: Octagon, name: "Partner 5" },
+  { name: "Vodafone", showName: true },
+  { name: "Microsoft", showName: true },
+  { name: "Intel", showName: false },
+  { name: "Siemens", showName: false },
+  { name: "O2", showName: false },
+  { name: "OpenAI", showName: false },
 ];
 
 const IMG_1 =
@@ -37,24 +35,24 @@ const IMG_4 =
 
 const allCards = [
   {
-    icon: Zap,
-    title: "Skalierbare Infrastruktur",
+    icon: BarChart3,
+    title: "Business Intelligence",
     description:
-      "Von Startup bis Enterprise — unsere Plattform wächst mit deinem Business mit.",
+      "Wir übersetzen komplexe Geschäftsprozesse in digitale Systeme — von individuellen Anwendungen über Datenarchitekturen bis zu Deep-Tech-Lösungen, die Ihre Entscheidungen messbar verbessern.",
     image: IMG_1,
   },
   {
-    icon: BarChart3,
-    title: "Echtzeit Analytics",
+    icon: Zap,
+    title: "Web & App Development",
     description:
-      "Verstehe deine Kunden besser mit detaillierten Einblicken in Echtzeit.",
+      "Fullstack-Entwicklung mit Next.js, Headless-Architekturen und Sanity CMS — performante, skalierbare Plattformen, die exakt auf Ihre Anforderungen zugeschnitten sind.",
     image: HERO_IMAGE,
   },
   {
     icon: ShieldCheck,
-    title: "Enterprise Security",
+    title: "Unsere Produkte",
     description:
-      "Deine Daten sind bei uns sicher. SOC 2 zertifiziert und DSGVO-konform.",
+      "Plauderbot und Lumera.ai sind proprietäre Lösungen, die wir selbst entwickeln und betreiben — bewährte Technologie aus eigener Hand, die direkt in Ihr Projekt integriert werden kann.",
     image: IMG_2,
   },
   {
@@ -94,27 +92,80 @@ const allCards = [
   },
 ];
 
+function VodafoneLogo() {
+  return <svg height="18" viewBox="0 0 24 24" fill="rgba(0,0,0,0.5)" xmlns="http://www.w3.org/2000/svg"><path d="M12 0A12 12 0 0 0 0 12A12 12 0 0 0 12 24A12 12 0 0 0 24 12A12 12 0 0 0 12 0M16.25 1.12C16.57 1.12 16.9 1.15 17.11 1.22C14.94 1.67 13.21 3.69 13.22 6C13.22 6.05 13.22 6.11 13.23 6.17C16.87 7.06 18.5 9.25 18.5 12.28C18.54 15.31 16.14 18.64 12.09 18.65C8.82 18.66 5.41 15.86 5.39 11.37C5.38 8.4 7 5.54 9.04 3.85C11.04 2.19 13.77 1.13 16.25 1.12Z"/></svg>;
+}
+
+function MicrosoftLogo() {
+  return <svg height="18" viewBox="0 0 24 24" fill="rgba(0,0,0,0.5)" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h11.5v11.5H0z"/><path d="M12.5 0H24v11.5H12.5z"/><path d="M0 12.5h11.5V24H0z"/><path d="M12.5 12.5H24V24H12.5z"/></svg>;
+}
+
+function IntelLogo() {
+  return <svg height="30" viewBox="0 0 24 24" fill="rgba(0,0,0,0.5)" xmlns="http://www.w3.org/2000/svg"><path d="M20.42 7.345v9.18h1.651v-9.18zM0 7.475v1.737h1.737V7.474zm9.78.352v6.053c0 .513.044.945.13 1.292.087.34.235.618.44.828.203.21.475.359.803.451.334.093.754.136 1.255.136h.216v-1.533c-.24 0-.445-.012-.593-.037a.672.672 0 0 1-.39-.173.693.693 0 0 1-.173-.377 4.002 4.002 0 0 1-.037-.606v-2.182h1.193v-1.416h-1.193V7.827zm-3.505 2.312c-.396 0-.76.08-1.082.241-.327.161-.6.384-.822.668l-.087.117v-.902H2.658v6.256h1.639v-3.214c.018-.588.16-1.02.433-1.299.29-.297.642-.445 1.044-.445.476 0 .841.149 1.082.433.235.284.359.686.359 1.2v3.324h1.663V12.97c.006-.89-.229-1.595-.686-2.09-.458-.495-1.1-.742-1.917-.742zm10.065.006a3.252 3.252 0 0 0-2.306.946c-.29.29-.525.637-.692 1.033a3.145 3.145 0 0 0-.254 1.273c0 .452.08.878.241 1.274.161.395.39.742.674 1.032.284.29.637.526 1.045.693.408.173.86.26 1.342.26 1.397 0 2.262-.637 2.782-1.23l-1.187-.904c-.248.297-.841.699-1.583.699-.464 0-.847-.105-1.138-.321a1.588 1.588 0 0 1-.593-.872l-.019-.056h4.915v-.587c0-.451-.08-.872-.235-1.267a3.393 3.393 0 0 0-.661-1.033 3.013 3.013 0 0 0-1.02-.692 3.345 3.345 0 0 0-1.311-.248zm-16.297.118v6.256h1.651v-6.256zm16.278 1.286c1.132 0 1.664.797 1.664 1.255l-3.32.006c0-.458.525-1.255 1.656-1.261zm7.073 3.814a.606.606 0 0 0-.606.606.606.606 0 0 0 .606.606.606.606 0 0 0 .606-.606.606.606 0 0 0-.606-.606zm-.008.105a.5.5 0 0 1 .002 0 .5.5 0 0 1 .5.501.5.5 0 0 1-.5.5.5.5 0 0 1-.5-.5.5.5 0 0 1 .498-.5zm-.233.155v.699h.13v-.285h.093l.173.285h.136l-.18-.297a.191.191 0 0 0 .118-.056c.03-.03.05-.074.05-.136 0-.068-.02-.117-.063-.154-.037-.038-.105-.056-.185-.056zm.13.099h.154c.019 0 .037.006.056.012a.064.064 0 0 1 .037.031c.013.013.012.031.012.056a.124.124 0 0 1-.012.055.164.164 0 0 1-.037.031c-.019.006-.037.013-.056.013h-.154Z"/></svg>;
+}
+
+function SiemensLogo() {
+  return <svg height="46" viewBox="0 0 24 24" fill="rgba(0,0,0,0.5)" xmlns="http://www.w3.org/2000/svg"><path d="M1.478 10.016c.24 0 .59.046 1.046.14v.726a2.465 2.465 0 0 0-.946-.213c-.41 0-.615.118-.615.354 0 .088.041.16.124.216.069.045.258.14.568.286.446.208.743.388.89.541.176.182.264.417.264.705 0 .415-.172.73-.516.949-.279.176-.64.264-1.085.264-.375 0-.753-.046-1.133-.139v-.755c.41.135.774.203 1.09.203.437 0 .655-.121.655-.362a.302.302 0 0 0-.095-.227c-.065-.065-.232-.155-.5-.27-.481-.208-.795-.384-.94-.53a.999.999 0 0 1-.284-.73c0-.377.137-.666.413-.864.272-.196.626-.294 1.064-.294zm21.19 0c.246 0 .565.04.956.123l.09.016v.727a2.471 2.471 0 0 0-.948-.213c-.409 0-.612.118-.612.354 0 .088.04.16.123.216.066.043.256.139.57.286.443.208.74.388.889.541.176.182.264.417.264.705 0 .415-.172.73-.514.949-.28.176-.643.264-1.087.264-.376 0-.754-.046-1.134-.139v-.755c.407.135.77.203 1.09.203.437 0 .655-.121.655-.362 0-.09-.03-.166-.092-.227-.066-.065-.233-.155-.503-.27-.48-.206-.793-.382-.94-.53a.997.997 0 0 1-.284-.732c0-.376.137-.664.413-.862.272-.196.627-.294 1.064-.294zm-12.674.066l.92 2.444.942-2.444h1.257v3.825h-.968v-2.708l-1.072 2.747h-.632l-1.052-2.747v2.708H8.67v-3.825zm-5.587 0v3.825H3.386v-3.825zm3.554 0v.692H6.327v.864H7.75v.63H6.327v.908h1.677v.73h-2.66v-3.824zm8.707 0v.692h-1.634v.864h1.422v.63h-1.422v.908h1.677v.73H14.05v-3.824zm1.898 0l1.255 2.56v-2.56h.719v3.825h-1.15l-1.288-2.595v2.595h-.72v-3.825z"/></svg>;
+}
+
+function O2Logo() {
+  return <svg height="20" viewBox="0 0 24 24" fill="rgba(0,0,0,0.5)" xmlns="http://www.w3.org/2000/svg"><path d="M9.473.191C3.827.191 0 4.271 0 9.917c0 5.317 3.86 9.726 9.472 9.726 5.61 0 9.433-4.409 9.433-9.726C18.905 4.27 15.116.19 9.473.19zm-.002 2.77c3.677 0 5.79 3.422 5.79 6.956 0 3.314-1.785 6.956-5.79 6.956-4.007 0-5.827-3.642-5.827-6.956 0-3.534 2.148-6.956 5.827-6.956zm11.69 12.48a5.47 5.47 0 0 0-2.44.588l.13 1.367c.543-.353 1.204-.66 1.9-.66.695 0 1.34.355 1.34 1.11 0 1.509-2.791 3.84-3.558 4.584v1.38H24v-1.298h-3.36c1.344-1.32 3.1-2.924 3.1-4.668 0-1.614-1.013-2.403-2.58-2.403z"/></svg>;
+}
+
+function OpenAILogo() {
+  return <svg height="20" viewBox="0 0 24 24" fill="rgba(0,0,0,0.5)" xmlns="http://www.w3.org/2000/svg"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg>;
+}
+
+const partnerLogos: Record<string, () => React.ReactNode> = {
+  Vodafone: VodafoneLogo,
+  Microsoft: MicrosoftLogo,
+  Intel: IntelLogo,
+  Siemens: SiemensLogo,
+  O2: O2Logo,
+  OpenAI: OpenAILogo,
+};
+
 function PartnerSet() {
   return (
     <div className="flex items-center gap-12 sm:gap-20 md:gap-32 px-6 sm:px-10 md:px-16">
-      {partners.map((partner) => (
-        <div
-          key={partner.name}
-          className="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity cursor-pointer"
-        >
-          <partner.icon className="w-5 h-5 text-gray-900" />
-          <span className="hidden sm:inline text-sm font-semibold text-gray-900">
-            {partner.name}
-          </span>
-        </div>
-      ))}
+      {partners.map((partner) => {
+        const Logo = partnerLogos[partner.name];
+        return (
+          <div
+            key={partner.name}
+            className="partner-item flex items-center gap-2 opacity-70 cursor-pointer"
+          >
+            <Logo />
+            {partner.showName && (
+              <span className="hidden sm:inline text-sm font-semibold text-black/50">
+                {partner.name}
+              </span>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
 
 const ZERO = { top: 0, right: 0, bottom: 0, left: 0 };
 
+const EASE_OUT = "cubic-bezier(0.16, 1, 0.3, 1)";
+const EASE_IN = "cubic-bezier(0.7, 0, 0.84, 0)";
+
+const MENU_LEFT = [
+  { label: "Leistungen", href: "/leistungen" },
+  { label: "Referenzen", href: "/referenzen" },
+  { label: "Blog", href: "/blog" },
+];
+
+const MENU_RIGHT = [
+  { label: "Über uns", href: "/ueber-uns" },
+  { label: "Kontakt", href: "/kontakt" },
+];
+
 export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const hScrollRef = useRef(0);
   const scrollingBackRef = useRef(false);
@@ -173,7 +224,7 @@ export default function Home() {
   }, []);
 
   const [scrollRatio, setScrollRatio] = useState(0);
-  const [partnersOpacity, setPartnersOpacity] = useState(1);
+  const partnersRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState(0);
   const [isMd, setIsMd] = useState(true);
 
@@ -257,7 +308,9 @@ export default function Home() {
     const ratio = el.scrollTop / vh;
 
     setScrollRatio(ratio);
-    setPartnersOpacity(1 - Math.min(ratio / 0.25, 1));
+    if (partnersRef.current) {
+      partnersRef.current.style.opacity = String(1 - Math.min(ratio / 0.08, 1));
+    }
     setActiveSection(Math.round(ratio));
 
     // Reset hScroll when going back to hero
@@ -422,6 +475,157 @@ export default function Home() {
   const textOp = Math.max(0, (morph - 0.85) / 0.15);
 
   return (
+    <>
+    {/* ===== Full-Screen Menu Overlay — OUTSIDE overflow-hidden container ===== */}
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999, pointerEvents: menuOpen ? "auto" : "none" }}>
+      {/* Window click area — "Hier fortsetzen" on hover, click closes */}
+      <div
+        onClick={() => setMenuOpen(false)}
+        className="group/window cursor-pointer flex items-center justify-center"
+        style={menuOpen ? {
+          position: "absolute",
+          top: "10vh", right: "36vw", bottom: "10vh", left: "36vw",
+          borderRadius: "1.5rem",
+          zIndex: 5,
+          transition: [
+            `top 0.9s ${EASE_OUT} 0.3s`,
+            `right 0.9s ${EASE_OUT} 0.3s`,
+            `bottom 0.9s ${EASE_OUT} 0.3s`,
+            `left 0.9s ${EASE_OUT} 0.3s`,
+          ].join(", "),
+        } : {
+          position: "absolute",
+          top: "0", right: "0", bottom: "0", left: "0",
+          borderRadius: "0",
+          zIndex: 5,
+          pointerEvents: "none" as const,
+          transition: [
+            `top 0.55s ${EASE_IN}`,
+            `right 0.55s ${EASE_IN}`,
+            `bottom 0.55s ${EASE_IN}`,
+            `left 0.55s ${EASE_IN}`,
+          ].join(", "),
+        }}
+      >
+        <span className="text-black/0 group-hover/window:text-black/60 text-lg font-bold uppercase tracking-[0.25em] transition-all duration-300 group-hover/window:scale-110">
+          Hier fortsetzen
+        </span>
+      </div>
+
+      {/* White frame with window cutout (Lucram box-shadow) */}
+      <div style={menuOpen ? {
+        position: "absolute",
+        top: "10vh", right: "36vw", bottom: "10vh", left: "36vw",
+        borderRadius: "1.5rem",
+        boxShadow: "0 0 0 100vmax #ffffff",
+        transition: [
+          `top 0.9s ${EASE_OUT} 0.3s`,
+          `right 0.9s ${EASE_OUT} 0.3s`,
+          `bottom 0.9s ${EASE_OUT} 0.3s`,
+          `left 0.9s ${EASE_OUT} 0.3s`,
+          `border-radius 0.9s ${EASE_OUT} 0.3s`,
+        ].join(", "),
+      } : {
+        position: "absolute",
+        top: "0", right: "0", bottom: "0", left: "0",
+        borderRadius: "0",
+        boxShadow: "0 0 0 100vmax #ffffff",
+        transition: [
+          `top 0.55s ${EASE_IN}`,
+          `right 0.55s ${EASE_IN}`,
+          `bottom 0.55s ${EASE_IN}`,
+          `left 0.55s ${EASE_IN}`,
+          `border-radius 0.55s ${EASE_IN}`,
+        ].join(", "),
+      }} />
+
+      {/* Close button */}
+      <button
+        onClick={() => setMenuOpen(false)}
+        className="text-[11px] font-medium uppercase tracking-[0.25em] text-black/30 hover:text-black transition-colors cursor-pointer"
+        style={{
+          position: "fixed",
+          top: "calc(1rem + 1rem)",
+          left: "50%",
+          zIndex: 10000,
+          pointerEvents: menuOpen ? "auto" as const : "none" as const,
+          ...(menuOpen ? {
+            opacity: 1,
+            transform: "translateX(-50%) translateY(0)",
+            transition: `opacity 0.5s ease 1.2s, transform 0.6s ${EASE_OUT} 1.2s`,
+          } : {
+            opacity: 0,
+            transform: "translateX(-50%) translateY(-10px)",
+            transition: "opacity 0.2s ease, transform 0.2s ease",
+          }),
+        }}
+      >
+        Schließen
+      </button>
+
+      {/* Left — Navigation */}
+      <div className="absolute top-0 bottom-0 left-0 flex items-center justify-center z-10" style={{ width: "36vw" }}>
+        <nav className="flex flex-col gap-4 lg:gap-6 items-end pr-8 lg:pr-12">
+          {MENU_LEFT.map((item, i) => (
+            <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}
+              className="menu-link text-4xl lg:text-6xl xl:text-7xl font-extralight text-gray-900 hover:text-black transition-colors pb-2"
+              style={menuOpen ? {
+                transform: "translateX(0)", opacity: 1,
+                transition: `transform 0.7s ${EASE_OUT} ${1.25 + i * 0.07}s, opacity 0.5s ease ${1.25 + i * 0.07}s`,
+              } : {
+                transform: "translateX(-60px)", opacity: 0,
+                transition: `transform 0.3s ${EASE_IN}, opacity 0.2s ease`,
+              }}
+            >{item.label}</a>
+          ))}
+        </nav>
+      </div>
+
+      {/* Right — Navigation */}
+      <div className="absolute top-0 bottom-0 right-0 flex items-center justify-center z-10" style={{ width: "36vw" }}>
+        <nav className="flex flex-col gap-4 lg:gap-6 items-end pr-8 lg:pr-12">
+          {MENU_RIGHT.map((item, i) => (
+            <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}
+              className="menu-link text-4xl lg:text-6xl xl:text-7xl font-extralight text-gray-900 hover:text-black transition-colors pb-2"
+              style={menuOpen ? {
+                transform: "translateX(0)", opacity: 1,
+                transition: `transform 0.7s ${EASE_OUT} ${1.25 + i * 0.07}s, opacity 0.5s ease ${1.25 + i * 0.07}s`,
+              } : {
+                transform: "translateX(60px)", opacity: 0,
+                transition: `transform 0.3s ${EASE_IN}, opacity 0.2s ease`,
+              }}
+            >{item.label}</a>
+          ))}
+        </nav>
+      {/* Legal Links im Menü */}
+      <div
+        className="absolute bottom-6 left-8 lg:bottom-8 lg:left-10 flex items-center gap-4 z-10"
+        style={menuOpen ? {
+          opacity: 1,
+          transition: `opacity 0.5s ease 1.3s`,
+        } : {
+          opacity: 0,
+          transition: "opacity 0.2s ease",
+        }}
+      >
+        <a href="/impressum" onClick={() => setMenuOpen(false)} className="text-[10px] font-medium uppercase tracking-[0.2em] text-black/25 hover:text-black/60 transition-colors">Impressum</a>
+        <a href="/datenschutz" onClick={() => setMenuOpen(false)} className="text-[10px] font-medium uppercase tracking-[0.2em] text-black/25 hover:text-black/60 transition-colors">Datenschutz</a>
+      </div>
+      <div
+        className="absolute bottom-6 right-8 lg:bottom-8 lg:right-10 flex items-center gap-4 z-10"
+        style={menuOpen ? {
+          opacity: 1,
+          transition: `opacity 0.5s ease 1.3s`,
+        } : {
+          opacity: 0,
+          transition: "opacity 0.2s ease",
+        }}
+      >
+        <a href="/kontakt" onClick={() => setMenuOpen(false)} className="text-[10px] font-medium uppercase tracking-[0.2em] text-black/25 hover:text-black/60 transition-colors">Kontakt</a>
+      </div>
+      </div>
+    </div>
+
     <div className="overflow-hidden relative h-screen">
       {/* ===== Card Overlays (Desktop) ===== */}
       {isMd && gridParamsRef.current.vw > 0 && allCards.map((card, i) => {
@@ -638,7 +842,7 @@ export default function Home() {
       })()}
 
       {/* Legal Links */}
-      <div className="fixed bottom-4 left-4 md:bottom-6 md:left-8 z-40 flex items-center gap-3">
+      <div className="fixed bottom-4 left-4 md:bottom-6 md:left-8 flex items-center gap-3" style={{ zIndex: 10001 }}>
         <a href="/impressum" className="text-[10px] font-medium text-gray-400 hover:text-gray-600 transition-colors">
           Impressum
         </a>
@@ -648,7 +852,7 @@ export default function Home() {
       </div>
 
       {/* Contact Link */}
-      <div className="fixed bottom-4 right-4 md:bottom-6 md:right-8 z-40 flex items-center gap-3">
+      <div className="fixed bottom-4 right-4 md:bottom-6 md:right-8 flex items-center gap-3" style={{ zIndex: 10001 }}>
         <a href="/kontakt" className="text-[10px] font-medium text-gray-400 hover:text-gray-600 transition-colors">
           Kontakt
         </a>
@@ -656,7 +860,11 @@ export default function Home() {
 
 
       {/* Header */}
-      <header className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl px-4 md:px-6 py-3 md:py-4 flex items-center justify-between z-50">
+      <header
+        className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl px-4 md:px-6 py-3 md:py-4 flex items-center justify-between z-50"
+        style={{ opacity: menuOpen ? 0 : 1, transition: "opacity 0.3s ease", pointerEvents: menuOpen ? "none" : "auto" }}
+      >
+        {/* Logo — links */}
         <a
           href="/"
           aria-label="Zur Startseite"
@@ -679,24 +887,15 @@ export default function Home() {
           </span>
         </a>
 
-        <nav
-          aria-label="Hauptnavigation"
-          className="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-500"
+        {/* Menü — Mitte */}
+        <button
+          onClick={() => setMenuOpen(true)}
+          className="absolute left-1/2 -translate-x-1/2 text-[9px] md:text-[10px] font-bold uppercase tracking-[0.25em] text-gray-500 hover:text-gray-900 transition-colors cursor-pointer"
         >
-          <a href="/leistungen" className="hover:text-gray-900 transition-colors">
-            Leistungen
-          </a>
-          <a href="/referenzen" className="hover:text-gray-900 transition-colors">
-            Referenzen
-          </a>
-          <a href="/ueber-uns" className="hover:text-gray-900 transition-colors">
-            Über uns
-          </a>
-          <a href="/kontakt" className="hover:text-gray-900 transition-colors">
-            Kontakt
-          </a>
-        </nav>
+          Menü
+        </button>
 
+        {/* CTA — rechts */}
         <div className="flex items-center gap-2 md:gap-4">
           <a
             href="/kontakt"
@@ -715,7 +914,7 @@ export default function Home() {
       >
         {/* 01 — Hero */}
         <section className="relative h-screen snap-start flex flex-col items-center justify-center px-4 text-center">
-          <div className="relative z-10" style={{ opacity: heroTextOp }}>
+          <div className="relative z-10" style={{ opacity: menuOpen ? 0 : heroTextOp, transition: "opacity 0.4s ease" }}>
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-gray-900 max-w-4xl leading-tight">
               We{" "}
               <span className="font-serif italic font-normal text-4xl sm:text-6xl md:text-7xl mx-1 text-gray-800">
@@ -744,16 +943,17 @@ export default function Home() {
           </div>
 
           <div
-            className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl overflow-hidden flex flex-col items-center z-10 transition-opacity duration-150"
-            style={{ opacity: partnersOpacity }}
+            ref={partnersRef}
+            className="absolute left-1/2 -translate-x-1/2 w-[95%] max-w-6xl overflow-hidden flex flex-col items-center z-10"
+            style={{ bottom: "44px", opacity: menuOpen ? 0 : undefined, transition: "opacity 0.4s ease" }}
           >
-            <h2 className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-[0.25em] mb-4 md:mb-6">
+            <h2 className="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-[0.25em] mb-3">
               Trusted by
             </h2>
-            <div className="relative w-full overflow-hidden flex items-center">
+            <div className="marquee-wrap relative w-full overflow-hidden flex items-center">
               <div
-                className="flex whitespace-nowrap items-center w-max"
-                style={{ animation: "marquee 25s linear infinite" }}
+                className="marquee-track flex whitespace-nowrap items-center w-max"
+                style={{ animation: "marquee 25s linear infinite", willChange: "transform" }}
                 aria-hidden="true"
               >
                 <PartnerSet />
@@ -813,5 +1013,6 @@ export default function Home() {
         </section>
       </div>
     </div>
+    </>
   );
 }
