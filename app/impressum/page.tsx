@@ -5,12 +5,24 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Impressum — defuse.",
   description:
-    "Impressum und Angaben gemäß § 5 TMG der defuse. digital.",
+    "Impressum und Angaben gemäß § 5 TMG — LUCRAM MEDIA GmbH, Augustusburg.",
+  robots: { index: true, follow: true },
+  alternates: { canonical: "https://defuse.digital/impressum" },
 };
 
 export default function ImpressumPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Startseite", item: "https://defuse.digital" },
+      { "@type": "ListItem", position: 2, name: "Impressum", item: "https://defuse.digital/impressum" },
+    ],
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Header />
       <main>
         <section className="pt-40 pb-24 px-6">
@@ -25,14 +37,32 @@ export default function ImpressumPage() {
                   Angaben gemäß § 5 TMG
                 </h2>
                 <p>
-                  defuse. digital
+                  LUCRAM MEDIA GmbH
                   <br />
-                  Louis Radisch
+                  Alte Chemnitzer Straße 4
                   <br />
-                  Musterstraße 1
+                  09573 Augustusburg
                   <br />
-                  09111 Chemnitz
+                  Deutschland
                 </p>
+              </div>
+
+              <div>
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
+                  Handelsregister
+                </h2>
+                <p>
+                  HRB: 32640
+                  <br />
+                  Amtsgericht Chemnitz
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
+                  Geschäftsführer
+                </h2>
+                <p>Ramy Töpperwien</p>
               </div>
 
               <div>
@@ -40,59 +70,67 @@ export default function ImpressumPage() {
                   Kontakt
                 </h2>
                 <p>
-                  E-Mail: hello@defuse.digital
+                  E-Mail:{" "}
+                  <a
+                    href="mailto:info@lucram-media.com"
+                    className="text-gray-900 font-medium hover:text-gray-600 transition-colors"
+                  >
+                    info@lucram-media.com
+                  </a>
                   <br />
-                  Telefon: +49 (0) 123 456 789
+                  Internet:{" "}
+                  <a
+                    href="https://www.lucram-media.de"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-900 font-medium hover:text-gray-600 transition-colors"
+                  >
+                    www.lucram-media.de
+                  </a>
                 </p>
               </div>
 
               <div>
                 <h2 className="text-lg font-extrabold text-gray-900 mb-4">
-                  Umsatzsteuer-ID
+                  Weitere Gesellschaft
+                </h2>
+                <p>LUCRAM MEDIA UG (haftungsbeschränkt)</p>
+              </div>
+
+              <div>
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
+                  Streitschlichtung
                 </h2>
                 <p>
-                  Umsatzsteuer-Identifikationsnummer gemäß § 27 a
-                  Umsatzsteuergesetz:
-                  <br />
-                  DE XXX XXX XXX
+                  Die Europäische Kommission stellt eine Plattform zur
+                  Online-Streitbeilegung (OS) bereit. Unsere E-Mail-Adresse
+                  finden Sie oben im Impressum. Wir sind nicht bereit oder
+                  verpflichtet, an Streitbeilegungsverfahren vor einer
+                  Verbraucherschlichtungsstelle teilzunehmen.
                 </p>
               </div>
 
               <div>
                 <h2 className="text-lg font-extrabold text-gray-900 mb-4">
-                  Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
-                </h2>
-                <p>
-                  Louis Radisch
-                  <br />
-                  Musterstraße 1
-                  <br />
-                  09111 Chemnitz
-                </p>
-              </div>
-
-              <div>
-                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
-                  Haftungsausschluss
-                </h2>
-                <h3 className="font-bold text-gray-900 mb-2">
                   Haftung für Inhalte
-                </h3>
-                <p className="mb-6">
-                  Die Inhalte unserer Seiten wurden mit größter Sorgfalt
-                  erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität
-                  der Inhalte können wir jedoch keine Gewähr übernehmen. Als
-                  Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene
+                </h2>
+                <p>
+                  Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene
                   Inhalte auf diesen Seiten nach den allgemeinen Gesetzen
                   verantwortlich. Nach §§ 8 bis 10 TMG sind wir als
                   Diensteanbieter jedoch nicht verpflichtet, übermittelte oder
-                  gespeicherte fremde Informationen zu überwachen.
+                  gespeicherte fremde Informationen zu überwachen oder nach
+                  Umständen zu forschen, die auf eine rechtswidrige Tätigkeit
+                  hinweisen.
                 </p>
-                <h3 className="font-bold text-gray-900 mb-2">
+              </div>
+
+              <div>
+                <h2 className="text-lg font-extrabold text-gray-900 mb-4">
                   Haftung für Links
-                </h3>
+                </h2>
                 <p>
-                  Unser Angebot enthält Links zu externen Webseiten Dritter, auf
+                  Unser Angebot enthält Links zu externen Websites Dritter, auf
                   deren Inhalte wir keinen Einfluss haben. Deshalb können wir
                   für diese fremden Inhalte auch keine Gewähr übernehmen. Für
                   die Inhalte der verlinkten Seiten ist stets der jeweilige
