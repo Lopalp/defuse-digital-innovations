@@ -10,6 +10,7 @@ const ADMIN_EMAILS = [
   "louis@defuse-digital.de",
   "caro.zehner@defuse-digital.de",
   "louis@vndl.media",
+  "7lopalp7@gmail.com",
 ];
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "defuse2026!";
