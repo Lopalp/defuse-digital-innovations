@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Search, Loader2, Check, X } from "lucide-react";
+import { useCachedFetch } from "@/lib/portal/use-cached-fetch";
 
 interface Customer {
   id: string; name: string; email: string; contactPerson: string;
@@ -10,22 +11,11 @@ interface Customer {
 }
 
 export default function AdminKundenPage() {
-  const [customers, setCustomers] = useState<Customer[]>([]);
-  const [projects, setProjects] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [customers, customersLoading] = useCachedFetch<Customer[]>("/api/portal/admin/kunden", []);
+  const [projects] = useCachedFetch<any[]>("/api/portal/admin/projekte", []);
+  const loading = customersLoading && customers.length === 0;
   const [search, setSearch] = useState("");
   const [portalFilter, setPortalFilter] = useState<"" | "yes" | "no">("");
-
-  useEffect(() => {
-    Promise.all([
-      fetch("/api/portal/admin/kunden").then(r => r.json()),
-      fetch("/api/portal/admin/projekte").then(r => r.json()),
-    ]).then(([c, p]) => {
-      setCustomers(Array.isArray(c) ? c : []);
-      setProjects(Array.isArray(p) ? p : []);
-      setLoading(false);
-    });
-  }, []);
 
   const projectCounts: Record<string, number> = {};
   for (const p of projects) {
@@ -91,7 +81,7 @@ export default function AdminKundenPage() {
                     <p className="text-[11px] text-gray-400">Portal</p>
                     <div className="mt-0.5">
                       {c.portalAccess ? (
-                        <span className="text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full text-xs font-medium">Aktiv</span>
+                        <span className="text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full text-xs font-medium">Aktiv</span>
                       ) : (
                         <span className="text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full text-xs font-medium">Inaktiv</span>
                       )}
@@ -101,7 +91,7 @@ export default function AdminKundenPage() {
                     <p className="text-[11px] text-gray-400">AVV</p>
                     <div className="mt-0.5">
                       {c.avvSigned ? (
-                        <span className="text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full text-xs font-medium">Signiert</span>
+                        <span className="text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full text-xs font-medium">Signiert</span>
                       ) : (
                         <span className="text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full text-xs font-medium">Ausstehend</span>
                       )}

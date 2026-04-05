@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search, Loader2, Globe, Github, LayoutGrid, List, Star, Archive, ArrowUpRight, Plus, X } from "lucide-react";
+import { useCachedFetch } from "@/lib/portal/use-cached-fetch";
 
 interface Project {
   id: string; name: string; customerName: string; customerId: string;
@@ -23,42 +24,36 @@ const STATUS_FILTERS = [
 ];
 
 const statusDot: Record<string, string> = {
-  "In progress": "bg-emerald-500", "Not started": "bg-blue-400",
-  "on hold": "bg-yellow-500", Done: "bg-gray-400",
+  "In progress": "bg-blue-500", "Not started": "bg-blue-400",
+  "on hold": "bg-gray-400", Done: "bg-gray-400",
 };
 const statusLabel: Record<string, string> = {
   "In progress": "Aktiv", "Not started": "Planung",
   "on hold": "Pausiert", Done: "Fertig",
 };
 const statusBadge: Record<string, string> = {
-  "In progress": "text-emerald-600 bg-emerald-50",
+  "In progress": "text-blue-600 bg-blue-50",
   "Not started": "text-blue-600 bg-blue-50",
-  "on hold": "text-yellow-600 bg-yellow-50",
+  "on hold": "text-gray-500 bg-gray-100",
   Done: "text-gray-500 bg-gray-100",
 };
 
 export default function AdminProjektePage() {
+  const [projectsCache, projectsLoading] = useCachedFetch<Project[]>("/api/portal/admin/projekte", []);
+  const [customersCache] = useCachedFetch<{ id: string; name: string }[]>("/api/portal/admin/kunden", []);
   const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
+  const loading = projectsLoading && projects.length === 0;
+
+  useEffect(() => { setProjects(projectsCache); }, [projectsCache]);
+  const customers = customersCache.map(k => ({ id: k.id, name: k.name }));
+
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [view, setView] = useState<"grid" | "list">("grid");
   const [showCreate, setShowCreate] = useState(false);
   const [creating, setCreating] = useState(false);
-  const [customers, setCustomers] = useState<{ id: string; name: string }[]>([]);
   const [newProject, setNewProject] = useState({ name: "", type: "", customerId: "", deadline: "", assignedTo: "", notes: "" });
   const router = useRouter();
-
-  useEffect(() => {
-    Promise.all([
-      fetch("/api/portal/admin/projekte").then(r => r.json()),
-      fetch("/api/portal/admin/kunden").then(r => r.json()),
-    ]).then(([p, c]) => {
-      setProjects(Array.isArray(p) ? p : []);
-      setCustomers(Array.isArray(c) ? c.map((k: any) => ({ id: k.id, name: k.name })) : []);
-      setLoading(false);
-    });
-  }, []);
 
   async function createProject() {
     if (!newProject.name.trim()) return;
@@ -276,13 +271,13 @@ export default function AdminProjektePage() {
                 <tr key={p.id} className="border-t border-gray-100 hover:bg-gray-50/50 transition-colors group">
                   <td className="px-4 py-3">
                     <button onClick={(e) => togglePin(e, p.id, !!p.pinned)}
-                      className={`transition-colors ${p.pinned ? "text-yellow-500" : "text-gray-200 hover:text-yellow-500"}`}>
+                      className={`transition-colors ${p.pinned ? "text-blue-500" : "text-gray-200 hover:text-blue-500"}`}>
                       <Star className={`w-4 h-4 ${p.pinned ? "fill-current" : ""}`} />
                     </button>
                   </td>
                   <td className="px-4 py-3">
                     <Link href={`/portal/admin/projekte/${p.id}`} className="font-semibold text-gray-900 hover:text-gray-700">{p.name}</Link>
-                    {p.liveUrl && <p className="text-xs text-emerald-600 mt-0.5">{p.liveUrl.replace(/^https?:\/\//, "")}</p>}
+                    {p.liveUrl && <p className="text-xs text-blue-600 mt-0.5">{p.liveUrl.replace(/^https?:\/\//, "")}</p>}
                   </td>
                   <td className="px-4 py-3 text-gray-500">{p.customerName}</td>
                   <td className="px-4 py-3 text-gray-500">{p.assignedTo || "–"}</td>
@@ -344,8 +339,8 @@ function ProjectCard({ project: p, onPin, onArchive }: {
             title={p.pinned ? "Entpinnen" : "Pinnen"}
             className="p-1.5 rounded-lg transition-all"
             style={{
-              color: p.pinned ? "#111827" : hoverStar ? "#111827" : "#9ca3af",
-              backgroundColor: hoverStar || p.pinned ? "#f3f4f6" : "transparent",
+              color: p.pinned ? "#3b82f6" : hoverStar ? "#3b82f6" : "#9ca3af",
+              backgroundColor: hoverStar || p.pinned ? "#eff6ff" : "transparent",
             }}
           >
             <Star className={`w-4 h-4 ${p.pinned ? "fill-current" : ""}`} />
@@ -376,7 +371,7 @@ function ProjectCard({ project: p, onPin, onArchive }: {
           <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">{p.assignedTo}</span>
         )}
         {p.liveUrl && (
-          <span className="text-xs text-emerald-600 truncate max-w-[180px]">{p.liveUrl.replace(/^https?:\/\//, "")}</span>
+          <span className="text-xs text-blue-600 truncate max-w-[180px]">{p.liveUrl.replace(/^https?:\/\//, "")}</span>
         )}
       </div>
 

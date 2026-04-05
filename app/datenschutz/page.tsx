@@ -3,9 +3,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Datenschutz — defuse.",
+  title: "Datenschutz — defuse digital",
   description:
-    "Datenschutzerklärung der defuse. digital — Informationen zur Erhebung und Verarbeitung personenbezogener Daten.",
+    "Datenschutzerklärung der defuse digital — Informationen zur Erhebung und Verarbeitung personenbezogener Daten.",
 };
 
 export default function DatenschutzPage() {
@@ -44,7 +44,7 @@ export default function DatenschutzPage() {
                   ist:
                 </p>
                 <p className="mt-4">
-                  defuse. digital
+                  defuse digital
                   <br />
                   Louis Radisch
                   <br />

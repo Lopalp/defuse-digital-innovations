@@ -76,7 +76,7 @@ export default function LandingPage() {
               />
             </svg>
             <span className="text-xl font-extrabold tracking-tighter">
-              defuse.
+              defuse digital
             </span>
           </div>
           <a
@@ -373,7 +373,7 @@ export default function LandingPage() {
       <footer className="border-t border-gray-200/50 py-8 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-400">
-            &copy; {new Date().getFullYear()} defuse. digital
+            &copy; {new Date().getFullYear()} defuse digital
           </p>
           <div className="flex items-center gap-4">
             <a

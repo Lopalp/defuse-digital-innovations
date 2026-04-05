@@ -19,10 +19,10 @@ export async function generateMetadata({
   if (!project) return {};
 
   return {
-    title: `${project.client} — ${project.title} | defuse.`,
+    title: `${project.client} — ${project.title} | defuse digital`,
     description: project.description,
     openGraph: {
-      title: `${project.client} — ${project.title} | defuse.`,
+      title: `${project.client} — ${project.title} | defuse digital`,
       description: project.description,
       images: [{ url: project.image, width: 1200, height: 630 }],
       type: "article",
@@ -50,7 +50,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
     description: project.description,
     author: {
       "@type": "Organization",
-      name: "defuse. digital",
+      name: "defuse digital",
       url: "https://defuse.digital",
     },
     datePublished: `${project.year}-01-01`,

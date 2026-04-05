@@ -3,7 +3,11 @@
 @theme {
   --font-sans: var(--font-jakarta);
   --font-serif: var(--font-playfair);
-  --font-display: var(--font-morgelora);
+}
+
+@utility font-headline {
+  font-family: "barques", "barques Fallback", sans-serif;
+  font-size: 0.75em;
 }
 
 @keyframes marquee {
@@ -73,4 +77,12 @@
 }
 .scrollbar-none::-webkit-scrollbar {
   display: none;
+}
+
+@media print {
+  body { background: white !important; color: black !important; }
+  aside, nav { display: none !important; }
+  main { margin: 0 !important; padding: 0 !important; }
+  .print\:hidden { display: none !important; }
+  .print\:block { display: block !important; }
 }

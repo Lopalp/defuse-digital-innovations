@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Impressum — defuse.",
+  title: "Impressum — defuse digital",
   description:
     "Impressum und Angaben gemäß § 5 TMG — LUCRAM MEDIA GmbH, Augustusburg.",
   robots: { index: true, follow: true },

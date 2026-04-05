@@ -7,11 +7,11 @@ import { BLOG_POSTS, formatDate } from "@/lib/blog";
 import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Blog — defuse. | Webdesign, SEO & Deep Tech aus Chemnitz",
+  title: "Blog — defuse digital | Webdesign, SEO & Deep Tech aus Chemnitz",
   description:
     "Praxis-Wissen zu Webdesign, SEO, Performance und Deep Tech. Tipps für Unternehmen aus Chemnitz, Dresden und Sachsen — von Entwicklern, die jeden Tag bauen.",
   openGraph: {
-    title: "Blog — defuse. | Webdesign, SEO & Deep Tech aus Chemnitz",
+    title: "Blog — defuse digital | Webdesign, SEO & Deep Tech aus Chemnitz",
     description:
       "Praxis-Wissen zu Webdesign, SEO, Performance und Deep Tech. Tipps für Unternehmen aus Chemnitz, Dresden und Sachsen.",
     type: "website",

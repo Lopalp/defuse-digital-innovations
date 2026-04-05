@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Plus, Loader2, X, Pencil, Trash2, CreditCard } from "lucide-react";
+import { useCachedFetch } from "@/lib/portal/use-cached-fetch";
 
 interface Abo {
   id: string;
@@ -19,16 +20,16 @@ const INTERVALL_OPTIONS = ["Monatlich", "Jährlich", "Einmalig"];
 const STATUS_OPTIONS = ["Aktiv", "Gekündigt", "Pausiert"];
 
 const STATUS_BADGE: Record<string, string> = {
-  "Aktiv": "text-emerald-600 bg-emerald-50",
-  "Gekündigt": "text-red-500 bg-red-50",
-  "Pausiert": "text-yellow-600 bg-yellow-50",
+  "Aktiv": "text-blue-600 bg-blue-50",
+  "Gekündigt": "text-gray-500 bg-gray-100",
+  "Pausiert": "text-gray-500 bg-gray-100",
 };
 
 const KATEGORIE_BADGE: Record<string, string> = {
   "Hosting": "text-blue-600 bg-blue-50",
-  "Domain": "text-purple-600 bg-purple-50",
-  "SaaS": "text-indigo-600 bg-indigo-50",
-  "API": "text-orange-600 bg-orange-50",
+  "Domain": "text-blue-600 bg-blue-50",
+  "SaaS": "text-gray-600 bg-gray-100",
+  "API": "text-gray-500 bg-gray-100",
   "Sonstiges": "text-gray-500 bg-gray-100",
 };
 
@@ -47,8 +48,12 @@ function formatDate(dateStr?: string) {
 }
 
 export default function AdminAbosPage() {
+  const [abosCache, abosLoading] = useCachedFetch<Abo[]>("/api/portal/admin/abos", []);
   const [abos, setAbos] = useState<Abo[]>([]);
-  const [loading, setLoading] = useState(true);
+  const loading = abosLoading && abos.length === 0;
+
+  useEffect(() => { setAbos(abosCache); }, [abosCache]);
+
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState("");
@@ -63,13 +68,6 @@ export default function AdminAbosPage() {
   const [formVerlaengerung, setFormVerlaengerung] = useState("");
   const [formStatus, setFormStatus] = useState("Aktiv");
   const [formKategorie, setFormKategorie] = useState("");
-
-  useEffect(() => {
-    fetch("/api/portal/admin/abos")
-      .then(r => r.json())
-      .then(data => { setAbos(Array.isArray(data) ? data : []); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, []);
 
   function resetForm() {
     setFormName("");
@@ -389,7 +387,7 @@ export default function AdminAbosPage() {
                         </button>
                         <button
                           onClick={() => deleteAbo(abo.id)}
-                          className="text-gray-300 hover:text-red-500 transition-colors"
+                          className="text-gray-300 hover:text-gray-600 transition-colors"
                           title="Löschen"
                         >
                           <Trash2 className="w-3.5 h-3.5" />

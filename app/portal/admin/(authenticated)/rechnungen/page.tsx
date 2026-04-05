@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Search, Loader2, TrendingUp } from "lucide-react";
+import { useCachedFetch } from "@/lib/portal/use-cached-fetch";
 
 interface Invoice {
   id: string; name: string; invoiceNo: string; client: string;
@@ -10,10 +11,10 @@ interface Invoice {
 }
 
 const statusStyles: Record<string, string> = {
-  Bezahlt: "text-emerald-600 bg-emerald-50",
+  Bezahlt: "text-blue-600 bg-blue-50",
   Gesendet: "text-blue-600 bg-blue-50",
   Entwurf: "text-gray-500 bg-gray-100",
-  "\u00DCberf\u00E4llig": "text-red-600 bg-red-50",
+  "\u00DCberf\u00E4llig": "text-gray-600 bg-gray-100",
 };
 
 const STATUS_FILTERS = [
@@ -24,16 +25,9 @@ const STATUS_FILTERS = [
 ];
 
 export default function AdminRechnungenPage() {
-  const [invoices, setInvoices] = useState<Invoice[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [invoices, loading] = useCachedFetch<Invoice[]>("/api/portal/admin/rechnungen", []);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-
-  useEffect(() => {
-    fetch("/api/portal/admin/rechnungen")
-      .then(r => r.json())
-      .then(data => { setInvoices(Array.isArray(data) ? data : []); setLoading(false); });
-  }, []);
 
   const filtered = invoices.filter(inv => {
     const s = search.toLowerCase();
@@ -55,10 +49,10 @@ export default function AdminRechnungenPage() {
       {/* Revenue Summary */}
       {!loading && (
         <div className="grid grid-cols-3 gap-4">
-          <div className="bg-emerald-50 rounded-2xl p-6">
-            <TrendingUp className="w-4 h-4 text-emerald-600 mb-3" />
-            <p className="text-xl font-bold text-emerald-600 tracking-tight">{totalRevenue.toLocaleString("de-DE")} \u20AC</p>
-            <p className="text-[11px] text-emerald-600 mt-1">Bezahlt</p>
+          <div className="bg-blue-50 rounded-2xl p-6">
+            <TrendingUp className="w-4 h-4 text-blue-600 mb-3" />
+            <p className="text-xl font-bold text-blue-600 tracking-tight">{totalRevenue.toLocaleString("de-DE")} \u20AC</p>
+            <p className="text-[11px] text-blue-600 mt-1">Bezahlt</p>
           </div>
           <div className="bg-blue-50 rounded-2xl p-6">
             <p className="text-xl font-bold text-blue-600 tracking-tight mt-7">{totalPending.toLocaleString("de-DE")} \u20AC</p>

@@ -131,7 +131,7 @@ export default function UeberUnsPage() {
         <svg aria-hidden="true" className="w-8 h-8 group-hover:-rotate-12 transition-transform duration-300" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M16 0C16 8.83656 8.83656 16 0 16C8.83656 16 16 23.1634 16 32C16 23.1634 23.1634 16 32 16C23.1634 16 16 8.83656 16 0Z" fill={uiColor} style={{ transition: "fill 0.4s ease" }} />
         </svg>
-        <span className="text-2xl font-extrabold tracking-tighter" style={{ color: uiColor, transition: "color 0.4s ease" }}>defuse.</span>
+        <span className="text-2xl font-headline font-bold tracking-tighter" style={{ color: uiColor, transition: "color 0.4s ease" }}>defuse digital</span>
       </a>
       <a href="/kontakt" className="px-4 md:px-5 py-2 md:py-2.5 rounded-full text-sm font-bold transition-all shadow-sm" style={{
         backgroundColor: inDark ? "white" : "#111827",
@@ -168,7 +168,7 @@ export default function UeberUnsPage() {
             <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight leading-[0.95] max-w-4xl">
               Technologie,
               <br />
-              <span className="font-display italic font-normal text-gray-400">die bleibt</span>
+              <span className="font-headline italic font-normal text-gray-400">die bleibt</span>
             </h1>
             <p className="mt-8 text-base md:text-lg text-gray-500 max-w-lg mx-auto font-medium leading-relaxed">
               Studierte Informatiker aus Sachsen. Nachhaltige Lösungen. Langfristige Partnerschaften.
@@ -405,7 +405,7 @@ export default function UeberUnsPage() {
             <h2 className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight leading-[0.95] max-w-3xl mx-auto text-white">
               Lassen Sie uns
               <br />
-              <span className="font-display italic font-normal text-gray-500">gemeinsam</span>
+              <span className="font-headline italic font-normal text-gray-500">gemeinsam</span>
               <br />
               wachsen
             </h2>

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Search, Loader2, MessageSquare, LifeBuoy, Circle, CheckCircle2 } from "lucide-react";
+import { useCachedFetch } from "@/lib/portal/use-cached-fetch";
 
 interface Message {
   id: string; subject: string; body: string; createdAt: string;
@@ -24,36 +25,25 @@ function timeAgo(d: string) {
 }
 
 const prioBadge: Record<string, string> = {
-  Dringend: "text-red-600 bg-red-50",
-  Hoch: "text-yellow-600 bg-yellow-50",
+  Dringend: "text-gray-600 bg-gray-100",
+  Hoch: "text-gray-500 bg-gray-100",
   Normal: "text-gray-500 bg-gray-100",
   Niedrig: "text-gray-500 bg-gray-100",
 };
 
 const ticketStatusBadge: Record<string, string> = {
-  Offen: "text-yellow-600 bg-yellow-50",
+  Offen: "text-gray-500 bg-gray-100",
   "In Bearbeitung": "text-blue-600 bg-blue-50",
-  "Warten auf Antwort": "text-yellow-600 bg-yellow-50",
+  "Warten auf Antwort": "text-gray-500 bg-gray-100",
   Geschlossen: "text-gray-500 bg-gray-100",
 };
 
 export default function AdminNachrichtenPage() {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [tickets, setTickets] = useState<Ticket[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [messages] = useCachedFetch<Message[]>("/api/portal/admin/nachrichten", []);
+  const [tickets] = useCachedFetch<Ticket[]>("/api/portal/admin/tickets", []);
+  const loading = messages.length === 0 && tickets.length === 0;
   const [tab, setTab] = useState<"messages" | "tickets">("messages");
   const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    Promise.all([
-      fetch("/api/portal/admin/nachrichten").then(r => r.json()),
-      fetch("/api/portal/admin/tickets").then(r => r.json()),
-    ]).then(([m, t]) => {
-      setMessages(Array.isArray(m) ? m : []);
-      setTickets(Array.isArray(t) ? t : []);
-      setLoading(false);
-    });
-  }, []);
 
   const unread = messages.filter(m => !m.read).length;
   const openTickets = tickets.filter(t => t.status !== "Geschlossen").length;
@@ -80,12 +70,12 @@ export default function AdminNachrichtenPage() {
         <button onClick={() => setTab("messages")}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors ${tab === "messages" ? "bg-gray-900 text-white" : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"}`}>
           <MessageSquare className="w-3.5 h-3.5" />
-          Nachrichten {unread > 0 && <span className="px-1.5 py-0.5 rounded-full bg-red-50 text-red-600 text-[10px] font-medium">{unread}</span>}
+          Nachrichten {unread > 0 && <span className="px-1.5 py-0.5 rounded-full bg-blue-50 text-blue-600 text-[10px] font-medium">{unread}</span>}
         </button>
         <button onClick={() => setTab("tickets")}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors ${tab === "tickets" ? "bg-gray-900 text-white" : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"}`}>
           <LifeBuoy className="w-3.5 h-3.5" />
-          Support-Tickets {openTickets > 0 && <span className="px-1.5 py-0.5 rounded-full bg-yellow-50 text-yellow-600 text-[10px] font-medium">{openTickets}</span>}
+          Support-Tickets {openTickets > 0 && <span className="px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-500 text-[10px] font-medium">{openTickets}</span>}
         </button>
       </div>
 

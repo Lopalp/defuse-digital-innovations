@@ -20,8 +20,8 @@ interface CustomerDetail {
 
 const statusBadge: Record<string, string> = {
   "Not started": "text-blue-600 bg-blue-50",
-  "In progress": "text-emerald-600 bg-emerald-50",
-  "on hold": "text-yellow-600 bg-yellow-50",
+  "In progress": "text-blue-600 bg-blue-50",
+  "on hold": "text-gray-500 bg-gray-100",
   "Done": "text-gray-500 bg-gray-100",
 };
 const statusLabels: Record<string, string> = { "Not started": "Planung", "In progress": "Aktiv", "on hold": "Pausiert", Done: "Fertig" };
@@ -68,7 +68,7 @@ export default function CustomerDetailPage() {
             <div className="flex items-center gap-3">
               <span className="text-xs text-gray-400">Kunde</span>
               {customer.portalAccess && (
-                <span className="text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full text-xs font-medium">Portal aktiv</span>
+                <span className="text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full text-xs font-medium">Portal aktiv</span>
               )}
             </div>
             <h1 className="text-xl font-semibold tracking-tight text-gray-900">{customer.name}</h1>
@@ -109,7 +109,7 @@ export default function CustomerDetailPage() {
           <User className="w-4 h-4 text-gray-300 mb-3" />
           <p className="text-[11px] text-gray-400 mb-1">Portal-Zugang</p>
           {customer.portalAccess ? (
-            <span className="text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full text-xs font-medium">Aktiv</span>
+            <span className="text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full text-xs font-medium">Aktiv</span>
           ) : (
             <span className="text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full text-xs font-medium">Inaktiv</span>
           )}
@@ -119,9 +119,9 @@ export default function CustomerDetailPage() {
           <Shield className="w-4 h-4 text-gray-300 mb-3" />
           <p className="text-[11px] text-gray-400 mb-1">AVV-Status</p>
           {customer.avvSigned ? (
-            <span className="text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full text-xs font-medium">Signiert</span>
+            <span className="text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full text-xs font-medium">Signiert</span>
           ) : (
-            <span className="text-yellow-600 bg-yellow-50 px-2.5 py-1 rounded-full text-xs font-medium">Ausstehend</span>
+            <span className="text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full text-xs font-medium">Ausstehend</span>
           )}
           {customer.avvSignedAt && (
             <p className="text-[11px] text-gray-400 mt-2">{customer.avvSignedAt}</p>
@@ -129,7 +129,7 @@ export default function CustomerDetailPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-5">
-          <div className={`w-4 h-4 rounded-full mb-3 ${active.length > 0 ? "bg-emerald-400" : "bg-gray-200"}`} />
+          <div className={`w-4 h-4 rounded-full mb-3 ${active.length > 0 ? "bg-blue-400" : "bg-gray-200"}`} />
           <p className="text-[11px] text-gray-400 mb-1">Aktive Projekte</p>
           <p className="text-sm font-semibold text-gray-900">{active.length}</p>
         </div>
@@ -147,7 +147,7 @@ export default function CustomerDetailPage() {
               <Link key={p.id} href={`/portal/admin/projekte/${p.id}`}
                 className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-5 hover:shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-shadow flex items-center justify-between group">
                 <div className="flex items-center gap-4">
-                  <span className={`w-2 h-2 rounded-full ${p.notionStatus === "In progress" ? "bg-emerald-500" : p.notionStatus === "Done" ? "bg-blue-500" : p.notionStatus === "on hold" ? "bg-yellow-500" : "bg-gray-300"}`} />
+                  <span className={`w-2 h-2 rounded-full ${p.notionStatus === "In progress" ? "bg-blue-500" : p.notionStatus === "Done" ? "bg-blue-500" : p.notionStatus === "on hold" ? "bg-gray-400" : "bg-gray-300"}`} />
                   <div>
                     <h3 className="text-sm font-semibold text-gray-900 group-hover:text-gray-700">{p.name}</h3>
                     <div className="flex items-center gap-3 mt-1">

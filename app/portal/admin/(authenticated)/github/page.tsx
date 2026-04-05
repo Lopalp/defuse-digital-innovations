@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Search, Loader2, ExternalLink, GitBranch, AlertCircle, Lock, Globe } from "lucide-react";
+import { useCachedFetch } from "@/lib/portal/use-cached-fetch";
 
 interface Repo {
   name: string;
@@ -18,12 +19,12 @@ interface Repo {
 
 const LANG_COLORS: Record<string, string> = {
   TypeScript: "bg-blue-400",
-  JavaScript: "bg-yellow-400",
-  Python: "bg-green-400",
-  CSS: "bg-purple-400",
-  HTML: "bg-orange-400",
-  Go: "bg-cyan-400",
-  Rust: "bg-red-400",
+  JavaScript: "bg-gray-400",
+  Python: "bg-gray-400",
+  CSS: "bg-blue-400",
+  HTML: "bg-gray-400",
+  Go: "bg-gray-400",
+  Rust: "bg-gray-400",
 };
 
 function timeAgo(dateStr: string): string {
@@ -37,23 +38,18 @@ function timeAgo(dateStr: string): string {
 }
 
 export default function AdminGitHubPage() {
-  const [repos, setRepos] = useState<Repo[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [repos, loading] = useCachedFetch<Repo[]>("/api/portal/admin/github", []);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
 
+  // Check for API error (e.g. missing token) separately
   useEffect(() => {
     fetch("/api/portal/admin/github")
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.error && !Array.isArray(data)) {
-          setError(data.error);
-          setRepos([]);
-        } else {
-          setRepos(Array.isArray(data) ? data : []);
-        }
-        setLoading(false);
-      });
+      .then(r => r.json())
+      .then(data => {
+        if (data.error && !Array.isArray(data)) setError(data.error);
+      })
+      .catch(() => {});
   }, []);
 
   const filtered = repos.filter(
@@ -70,19 +66,19 @@ export default function AdminGitHubPage() {
           <h1 className="text-xl font-semibold tracking-tight text-gray-900">GitHub Repos</h1>
           <p className="text-sm text-gray-500 mt-1">VNDLmedia Organisation</p>
         </header>
-        <div className="bg-amber-50 rounded-2xl p-5">
+        <div className="bg-gray-100 rounded-2xl p-5">
           <div className="flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5 shrink-0" />
+            <AlertCircle className="w-5 h-5 text-gray-500 mt-0.5 shrink-0" />
             <div>
-              <p className="text-sm font-medium text-amber-700">GitHub Token nicht konfiguriert</p>
-              <p className="text-sm text-amber-700 mt-2">
+              <p className="text-sm font-medium text-gray-600">GitHub Token nicht konfiguriert</p>
+              <p className="text-sm text-gray-600 mt-2">
                 Um GitHub-Repos anzuzeigen, f\u00FCge einen Personal Access Token als{" "}
-                <code className="bg-amber-100 px-1.5 py-0.5 rounded text-xs">GITHUB_TOKEN</code> in{" "}
-                <code className="bg-amber-100 px-1.5 py-0.5 rounded text-xs">.env.local</code> hinzu.
+                <code className="bg-gray-200 px-1.5 py-0.5 rounded text-xs">GITHUB_TOKEN</code> in{" "}
+                <code className="bg-gray-200 px-1.5 py-0.5 rounded text-xs">.env.local</code> hinzu.
               </p>
-              <p className="text-xs text-amber-700 mt-2">
-                Der Token braucht <code className="bg-amber-100 px-1 rounded">repo</code> und{" "}
-                <code className="bg-amber-100 px-1 rounded">read:org</code> Scopes.
+              <p className="text-xs text-gray-600 mt-2">
+                Der Token braucht <code className="bg-gray-200 px-1 rounded">repo</code> und{" "}
+                <code className="bg-gray-200 px-1 rounded">read:org</code> Scopes.
               </p>
             </div>
           </div>
@@ -155,7 +151,7 @@ export default function AdminGitHubPage() {
                   {r.defaultBranch}
                 </span>
                 {r.openIssues > 0 && (
-                  <span className="text-yellow-600">{r.openIssues} issues</span>
+                  <span className="text-gray-500">{r.openIssues} issues</span>
                 )}
                 <span className="text-gray-400">{timeAgo(r.pushedAt)}</span>
               </div>

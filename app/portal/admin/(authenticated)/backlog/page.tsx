@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Plus, Loader2, X, ChevronDown, Calendar, Trash2 } from "lucide-react";
+import { useCachedFetch } from "@/lib/portal/use-cached-fetch";
 
 interface Task {
   id: string;
@@ -21,13 +22,13 @@ interface Project {
 const COLUMNS = [
   { key: "Backlog", label: "Backlog", color: "bg-gray-400" },
   { key: "To Do", label: "To Do", color: "bg-blue-400" },
-  { key: "In Arbeit", label: "In Arbeit", color: "bg-yellow-400" },
-  { key: "Erledigt", label: "Erledigt", color: "bg-emerald-400" },
+  { key: "In Arbeit", label: "In Arbeit", color: "bg-gray-400" },
+  { key: "Erledigt", label: "Erledigt", color: "bg-blue-400" },
 ];
 
 const PRIORITY_OPTIONS = [
-  { value: "high", label: "Hoch", className: "text-red-600 bg-red-50" },
-  { value: "medium", label: "Mittel", className: "text-yellow-600 bg-yellow-50" },
+  { value: "high", label: "Hoch", className: "text-gray-600 bg-gray-100" },
+  { value: "medium", label: "Mittel", className: "text-gray-500 bg-gray-100" },
   { value: "low", label: "Niedrig", className: "text-gray-500 bg-gray-100" },
 ];
 
@@ -51,9 +52,15 @@ function formatDate(dateStr?: string) {
 }
 
 export default function AdminBacklogPage() {
+  const [tasksCache, tasksLoading] = useCachedFetch<Task[]>("/api/portal/admin/backlog", []);
+  const [projectsCache] = useCachedFetch<any[]>("/api/portal/admin/projekte", []);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
+  const loading = tasksLoading && tasks.length === 0;
+
+  useEffect(() => { setTasks(tasksCache); }, [tasksCache]);
+  useEffect(() => { setProjects(projectsCache.map((p: any) => ({ id: p.id, name: p.name }))); }, [projectsCache]);
+
   const [showForm, setShowForm] = useState(false);
   const [filterProject, setFilterProject] = useState("");
   const [filterAssignee, setFilterAssignee] = useState("");
@@ -66,24 +73,6 @@ export default function AdminBacklogPage() {
   const [newPriority, setNewPriority] = useState("");
   const [newDueDate, setNewDueDate] = useState("");
   const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    async function load() {
-      try {
-        const [tasksRes, projRes] = await Promise.all([
-          fetch("/api/portal/admin/backlog").then(r => r.json()),
-          fetch("/api/portal/admin/projekte").then(r => r.json()),
-        ]);
-        setTasks(Array.isArray(tasksRes) ? tasksRes : []);
-        setProjects(Array.isArray(projRes) ? projRes.map((p: any) => ({ id: p.id, name: p.name })) : []);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    }
-    load();
-  }, []);
 
   function getProjectName(projectId: string) {
     return projects.find(p => p.id === projectId)?.name || "Unbekanntes Projekt";
@@ -281,7 +270,7 @@ export default function AdminBacklogPage() {
                           <p className="text-sm font-medium text-gray-900 flex-1">{task.name}</p>
                           <button
                             onClick={() => deleteTask(task.id)}
-                            className="text-gray-200 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100 ml-2 flex-shrink-0"
+                            className="text-gray-200 hover:text-gray-600 transition-colors opacity-0 group-hover:opacity-100 ml-2 flex-shrink-0"
                             title="Aufgabe löschen"
                           >
                             <Trash2 className="w-3.5 h-3.5" />

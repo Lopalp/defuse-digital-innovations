@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   FolderKanban,
@@ -13,6 +13,7 @@ import {
   Loader2,
   Star,
 } from "lucide-react";
+import { useCachedFetch } from "@/lib/portal/use-cached-fetch";
 
 interface Stats {
   projects: { total: number; active: number; done: number; onHold: number; planning: number };
@@ -59,53 +60,44 @@ function StatCard({ icon: Icon, label, value, sub, href, loading }: {
 }
 
 const statusDot: Record<string, string> = {
-  "In progress": "bg-emerald-500",
+  "In progress": "bg-blue-500",
   "Not started": "bg-blue-400",
-  "on hold": "bg-yellow-500",
+  "on hold": "bg-gray-400",
   "Done": "bg-gray-400",
 };
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState<Stats | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [projData] = useCachedFetch<any[]>("/api/portal/admin/projekte", []);
+  const [custData] = useCachedFetch<any[]>("/api/portal/admin/kunden", []);
+  const [ghData] = useCachedFetch<any>("/api/portal/admin/github", []);
+  const [vcData] = useCachedFetch<any>("/api/portal/admin/vercel", []);
+  const [invData] = useCachedFetch<any[]>("/api/portal/admin/rechnungen", []);
+  const [msgData] = useCachedFetch<any[]>("/api/portal/admin/nachrichten", []);
+
   const [projects, setProjects] = useState<Project[]>([]);
+  useEffect(() => { setProjects(projData || []); }, [projData]);
 
-  const loadData = useCallback(async () => {
-    try {
-      const [projRes, custRes, ghRes, vcRes, invRes, msgRes] = await Promise.all([
-        fetch("/api/portal/admin/projekte").then(r => r.json()),
-        fetch("/api/portal/admin/kunden").then(r => r.json()),
-        fetch("/api/portal/admin/github").then(r => r.json()),
-        fetch("/api/portal/admin/vercel").then(r => r.json()),
-        fetch("/api/portal/admin/rechnungen").then(r => r.json()),
-        fetch("/api/portal/admin/nachrichten").then(r => r.json()),
-      ]);
+  const loading = projData.length === 0 && custData.length === 0;
 
-      setStats({
-        projects: {
-          total: projRes.length || 0,
-          active: (projRes || []).filter((x: any) => x.notionStatus === "In progress").length,
-          done: (projRes || []).filter((x: any) => x.notionStatus === "Done").length,
-          onHold: (projRes || []).filter((x: any) => x.notionStatus === "on hold").length,
-          planning: (projRes || []).filter((x: any) => x.notionStatus === "Not started").length,
-        },
-        customers: { total: custRes.length || 0, portalActive: (custRes || []).filter((x: any) => x.portalAccess).length },
-        github: { total: ghRes.length || 0, error: ghRes.error },
-        vercel: { total: vcRes.length || 0, error: vcRes.error },
-        invoices: {
-          total: invRes.length || 0,
-          revenue: (invRes || []).filter((x: any) => x.status === "Bezahlt").reduce((s: number, x: any) => s + x.amount, 0),
-          pending: (invRes || []).filter((x: any) => x.status !== "Bezahlt" && x.status !== "Entwurf").length,
-          pendingAmount: (invRes || []).filter((x: any) => x.status === "Gesendet").reduce((s: number, x: any) => s + x.amount, 0),
-        },
-        messages: { total: msgRes.length || 0, unread: (msgRes || []).filter((x: any) => !x.read).length },
-      });
-
-      setProjects(projRes || []);
-    } catch (e) { console.error(e); } finally { setLoading(false); }
-  }, []);
-
-  useEffect(() => { loadData(); }, [loadData]);
+  const stats: Stats = {
+    projects: {
+      total: projData.length || 0,
+      active: projData.filter((x: any) => x.notionStatus === "In progress").length,
+      done: projData.filter((x: any) => x.notionStatus === "Done").length,
+      onHold: projData.filter((x: any) => x.notionStatus === "on hold").length,
+      planning: projData.filter((x: any) => x.notionStatus === "Not started").length,
+    },
+    customers: { total: custData.length || 0, portalActive: custData.filter((x: any) => x.portalAccess).length },
+    github: { total: Array.isArray(ghData) ? ghData.length : 0, error: ghData?.error },
+    vercel: { total: Array.isArray(vcData) ? vcData.length : 0, error: vcData?.error },
+    invoices: {
+      total: invData.length || 0,
+      revenue: invData.filter((x: any) => x.status === "Bezahlt").reduce((s: number, x: any) => s + x.amount, 0),
+      pending: invData.filter((x: any) => x.status !== "Bezahlt" && x.status !== "Entwurf").length,
+      pendingAmount: invData.filter((x: any) => x.status === "Gesendet").reduce((s: number, x: any) => s + x.amount, 0),
+    },
+    messages: { total: msgData.length || 0, unread: msgData.filter((x: any) => !x.read).length },
+  };
 
   const pinnedProjects = projects.filter(p => p.pinned === true);
   const activeProjects = projects.filter(p => p.notionStatus === "In progress").slice(0, 5);
@@ -133,7 +125,7 @@ export default function AdminDashboard() {
       {/* Gepinnte Projekte */}
       <div>
         <div className="flex items-center gap-2 mb-4">
-          <Star className="w-4 h-4 text-yellow-500 fill-current" />
+          <Star className="w-4 h-4 text-blue-500 fill-current" />
           <h2 className="text-base font-semibold text-gray-900">Gepinnte Projekte</h2>
         </div>
         {loading ? (
@@ -153,7 +145,7 @@ export default function AdminDashboard() {
                   </div>
                   <button
                     onClick={() => handleUnpin(p.id)}
-                    className="text-yellow-500 hover:text-yellow-600 transition-colors"
+                    className="text-blue-500 hover:text-blue-600 transition-colors"
                     title="Projekt entpinnen"
                   >
                     <Star className="w-4 h-4 fill-current" />
@@ -164,7 +156,7 @@ export default function AdminDashboard() {
                   <p className="text-xs text-gray-400 mb-2">{p.customerName}</p>
                 </Link>
                 {p.liveUrl && (
-                  <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-600 hover:text-emerald-700 transition-colors truncate">
+                  <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:text-blue-700 transition-colors truncate">
                     {p.liveUrl.replace(/^https?:\/\//, "")}
                   </a>
                 )}
@@ -210,7 +202,7 @@ export default function AdminDashboard() {
                     <p className="text-xs text-gray-400">{p.customerName}</p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full text-xs font-medium">Aktiv</span>
+                    <span className="text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full text-xs font-medium">Aktiv</span>
                     <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-gray-900 transition-colors" />
                   </div>
                 </Link>

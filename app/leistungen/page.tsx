@@ -28,20 +28,9 @@ import {
    IMAGES
    ──────────────────────────────────────────────────────────── */
 
-const HERO_BG =
-  "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.1.0";
-
 const IMG_WEBDESIGN =
   "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1740&auto=format&fit=crop";
 
-const IMG_CMS =
-  "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1740&auto=format&fit=crop";
-
-const IMG_SEO =
-  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1740&auto=format&fit=crop";
-
-const IMG_TESTIMONIAL =
-  "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop";
 
 /* ────────────────────────────────────────────────────────────
    PROCESS STEPS
@@ -140,23 +129,19 @@ const MARQUEE_ITEMS = [
    ZOOM IMAGE HOOK (hero parallax)
    ──────────────────────────────────────────────────────────── */
 
-function useHeroZoom() {
-  const [scale, setScale] = useState(1);
+function useHeroFade() {
   const [opacity, setOpacity] = useState(1);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const viewH = window.innerHeight;
-      const progress = Math.min(scrollY / viewH, 1);
-      setScale(1 + progress * 0.3);
+      const progress = Math.min(window.scrollY / window.innerHeight, 1);
       setOpacity(1 - progress * 0.7);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  return { scale, opacity };
+  return opacity;
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -164,7 +149,7 @@ function useHeroZoom() {
    ──────────────────────────────────────────────────────────── */
 
 export default function LeistungenPage() {
-  const { scale, opacity } = useHeroZoom();
+  const opacity = useHeroFade();
   const [heroLoaded, setHeroLoaded] = useState(false);
 
   useEffect(() => {
@@ -180,25 +165,14 @@ export default function LeistungenPage() {
             1. HERO — Cinematic fullscreen with ZoomImage effect
             ═══════════════════════════════════════════════════ */}
         <section className="relative h-[100svh] flex items-center justify-center overflow-hidden">
-          {/* Background image with zoom-on-scroll */}
+          {/* Background */}
           <div
-            className="absolute inset-0 z-0"
+            className="absolute inset-0 z-0 bg-gray-950"
             style={{
-              transform: `scale(${scale})`,
               opacity,
-              transition: "transform 0.1s linear, opacity 0.1s linear",
+              transition: "opacity 0.1s linear",
             }}
-          >
-            <Image
-              src={HERO_BG}
-              alt="Digitale Landschaft"
-              fill
-              priority
-              className="object-cover"
-              sizes="100vw"
-            />
-            <div className="absolute inset-0 bg-gray-950/60" />
-          </div>
+          />
 
           {/* Hero content */}
           <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
@@ -213,13 +187,12 @@ export default function LeistungenPage() {
                 Unsere Leistungen
               </p>
               <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] font-extrabold text-white tracking-tighter leading-[0.9]">
-                Digital.
+                Websites. SEO.
                 <br />
-                <span className="font-display italic font-normal">Präzise.</span>
+                <span className="font-headline italic font-normal">Deep Tech.</span>
               </h1>
               <p className="mt-8 text-lg md:text-xl text-white/60 max-w-xl mx-auto font-medium leading-relaxed">
-                Websites, SEO & Deep Tech — alles aus einer Hand.
-                Maßgeschneidert für Unternehmen, die mehr erwarten.
+                Alles aus einer Hand — maßgeschneidert für Unternehmen mit Anspruch.
               </p>
             </div>
 
@@ -254,7 +227,7 @@ export default function LeistungenPage() {
                   </p>
                   <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.05]">
                     95% aller Websites{" "}
-                    <span className="font-serif italic font-normal text-gray-400">
+                    <span className="font-headline italic font-normal text-gray-400">
                       scheitern.
                     </span>
                   </h2>
@@ -272,7 +245,7 @@ export default function LeistungenPage() {
                     rankt noch Besucher in Kunden verwandelt.
                   </p>
                   <p className="mt-6 text-base md:text-lg text-gray-600 leading-[1.9] font-medium">
-                    defuse. existiert, weil wir das anders sehen. Jede Website, die wir
+                    defuse digital existiert, weil wir das anders sehen. Jede Website, die wir
                     entwickeln, ist ein individuelles System — gebaut auf modernem Code,
                     optimiert für Suchmaschinen und designed für messbare Ergebnisse. Keine
                     Kompromisse. Keine Abkürzungen.
@@ -381,7 +354,7 @@ export default function LeistungenPage() {
                       >
                         {isLast ? (
                           <>
-                            <span className="font-display italic font-normal">Wirkung</span>{" "}
+                            <span className="font-headline italic font-normal">Wirkung</span>{" "}
                             statt Output.
                           </>
                         ) : (
@@ -408,7 +381,7 @@ export default function LeistungenPage() {
                 </p>
                 <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight">
                   Von der Idee zum{" "}
-                  <span className="font-serif italic font-normal">Launch</span>
+                  <span className="font-headline italic font-normal">Launch</span>
                 </h2>
               </div>
             </Reveal>
@@ -478,7 +451,7 @@ export default function LeistungenPage() {
               {/* Giant number + image */}
               <Reveal direction="left" className="w-full lg:w-1/2">
                 <div className="relative">
-                  <span className="text-[12rem] sm:text-[16rem] md:text-[20rem] font-extrabold text-gray-100 leading-none absolute -top-16 -left-4 select-none pointer-events-none z-0">
+                  <span className="text-[8rem] sm:text-[10rem] md:text-[12rem] font-extrabold text-gray-100 leading-none absolute -top-8 -left-2 select-none pointer-events-none z-0">
                     01
                   </span>
                   <div className="relative z-10 rounded-2xl overflow-hidden h-[400px] md:h-[560px]">
@@ -498,7 +471,7 @@ export default function LeistungenPage() {
                 <div>
                   <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.05] mb-3">
                     Websites, die{" "}
-                    <span className="font-display italic font-normal">verkaufen.</span>
+                    <span className="font-headline italic font-normal">verkaufen.</span>
                   </h2>
                   <p className="text-lg text-gray-400 font-medium mb-8">
                     Nicht nur schön — strategisch.
@@ -563,7 +536,7 @@ export default function LeistungenPage() {
             </Reveal>
 
             <Reveal direction="up" delay={0.1}>
-              <span className="text-[10rem] sm:text-[14rem] md:text-[18rem] font-extrabold text-gray-100 leading-none block select-none pointer-events-none">
+              <span className="text-[6rem] sm:text-[8rem] md:text-[10rem] font-extrabold text-gray-100 leading-none block select-none pointer-events-none">
                 02
               </span>
             </Reveal>
@@ -571,7 +544,7 @@ export default function LeistungenPage() {
             <Reveal direction="up" delay={0.2}>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05] -mt-16 md:-mt-24 relative z-10">
                 Ihr Content.{" "}
-                <span className="font-serif italic font-normal">Ihre Kontrolle.</span>
+                <span className="font-headline italic font-normal">Ihre Kontrolle.</span>
               </h2>
             </Reveal>
 
@@ -671,7 +644,7 @@ export default function LeistungenPage() {
                 <div>
                   <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-[1.05] mb-3">
                     Gefunden werden.{" "}
-                    <span className="font-serif italic font-normal text-gray-400">
+                    <span className="font-headline italic font-normal text-gray-400">
                       Dominieren.
                     </span>
                   </h2>
@@ -779,7 +752,7 @@ export default function LeistungenPage() {
                 </p>
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
                   Wenn Standard nicht{" "}
-                  <span className="font-serif italic font-normal">reicht.</span>
+                  <span className="font-headline italic font-normal">reicht.</span>
                 </h2>
               </div>
             </Reveal>
@@ -901,18 +874,7 @@ export default function LeistungenPage() {
         {/* ═══════════════════════════════════════════════════
             10. TESTIMONIAL — Fullscreen centered quote
             ═══════════════════════════════════════════════════ */}
-        <section className="relative py-40 md:py-52 overflow-hidden">
-          {/* Background image */}
-          <div className="absolute inset-0 z-0">
-            <Image
-              src={IMG_TESTIMONIAL}
-              alt="Testimonial Hintergrund"
-              fill
-              className="object-cover"
-              sizes="100vw"
-            />
-            <div className="absolute inset-0 bg-gray-950/80 backdrop-blur-sm" />
-          </div>
+        <section className="relative py-40 md:py-52 overflow-hidden bg-gray-950">
 
           <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
             <Reveal direction="up" animation="scale">
@@ -922,7 +884,7 @@ export default function LeistungenPage() {
                   &ldquo;
                 </span>
                 <blockquote className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white font-bold tracking-tight leading-[1.3] -mt-12 md:-mt-16">
-                  defuse. hat unsere Website nicht einfach neu gebaut — sie haben unser
+                  defuse digital hat unsere Website nicht einfach neu gebaut — sie haben unser
                   gesamtes digitales Auftreten auf ein neues Level gehoben. Ladezeit unter
                   einer Sekunde, Top-Rankings und ein CMS, das unser Team liebt.
                 </blockquote>
@@ -953,7 +915,7 @@ export default function LeistungenPage() {
             <Reveal direction="up" delay={0.1}>
               <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tighter leading-[0.95]">
                 Lassen Sie uns Ihr{" "}
-                <span className="font-display italic font-normal">nächstes Projekt</span>
+                <span className="font-headline italic font-normal">nächstes Projekt</span>
                 {" "}starten.
               </h2>
             </Reveal>
@@ -983,12 +945,6 @@ export default function LeistungenPage() {
               </div>
             </Reveal>
 
-            {/* Giant decorative arrow */}
-            <Reveal direction="up" delay={0.5} distance={100}>
-              <div className="mt-24 flex justify-center">
-                <ArrowDownRight className="w-32 h-32 md:w-48 md:h-48 text-gray-100 stroke-[0.5]" />
-              </div>
-            </Reveal>
           </div>
         </section>
       </main>

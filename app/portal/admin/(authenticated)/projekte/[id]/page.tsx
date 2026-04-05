@@ -30,8 +30,8 @@ const STATUS_OPTIONS = [
 ];
 
 const PRIO_OPTIONS = [
-  { value: "high", label: "Hoch", active: "bg-red-50 text-red-600" },
-  { value: "medium", label: "Mittel", active: "bg-yellow-50 text-yellow-600" },
+  { value: "high", label: "Hoch", active: "bg-gray-100 text-gray-600" },
+  { value: "medium", label: "Mittel", active: "bg-gray-100 text-gray-500" },
   { value: "low", label: "Niedrig", active: "bg-gray-100 text-gray-500" },
   { value: "", label: "\u2013", active: "bg-gray-100 text-gray-400" },
 ];
@@ -133,99 +133,82 @@ export default function ProjectDetailPage() {
         </div>
       )}
 
-      {/* Hero with screenshot background — edge to edge, tall */}
-      <div className="relative overflow-hidden" style={{ minHeight: "480px" }}>
-        {/* Screenshot as full background */}
-        {project.liveUrl ? (
+      {/* Screenshot — edge to edge, pure image, no overlay */}
+      {project.liveUrl && (
+        <div className="w-full h-[380px] bg-gray-100 overflow-hidden">
           <img
             src={`/api/portal/admin/screenshot?url=${encodeURIComponent(project.liveUrl)}`}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover object-top"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+            alt={project.name}
+            className="w-full h-full object-cover object-top"
+            onError={(e) => { (e.target as HTMLImageElement).parentElement!.style.display = "none"; }}
           />
-        ) : null}
-        {/* Fallback bg */}
-        <div className="absolute inset-0 bg-gray-900" style={{ zIndex: -1 }} />
-        {/* Gradient: strong at bottom for text, lighter at top to show the screenshot */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+        </div>
+      )}
 
-        {/* Content pinned to bottom */}
-        <div className="relative z-10 flex flex-col justify-between h-full" style={{ minHeight: "480px" }}>
-          {/* Top: Back link */}
-          <div className="p-6 md:p-10">
-            <NextLink href="/portal/admin/projekte" className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
-              <ArrowLeft className="w-4 h-4" />
-              <span>Projekte</span>
-            </NextLink>
+      {/* Content below the image */}
+      <div className="max-w-6xl mx-auto px-8 md:px-12 pb-24 pt-8 space-y-8">
+
+      {/* Project header */}
+      <div>
+        <NextLink href="/portal/admin/projekte" className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-gray-900 transition-colors mb-6">
+          <ArrowLeft className="w-4 h-4" />
+          <span>Projekte</span>
+        </NextLink>
+
+        <div className="flex items-center gap-3 mb-2">
+          <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">{project.type || "Entwicklung"}</span>
+          {project.area && <span className="text-xs text-gray-400">· {project.area}</span>}
+          {project.customerName && project.customerName !== "–" && (
+            <NextLink href={project.customerId ? `/portal/admin/kunden/${project.customerId}` : "#"}
+              className="text-xs text-gray-400 hover:text-gray-900 transition-colors">· {project.customerName}</NextLink>
+          )}
+        </div>
+
+        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-900 mb-5">{project.name}</h1>
+
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Status selector */}
+          <div className="flex bg-white rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-1">
+            {STATUS_OPTIONS.map(opt => (
+              <button key={opt.value} onClick={() => { setStatus(opt.value); save({ status: opt.value }); }}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+                  status === opt.value ? "bg-gray-900 text-white" : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+                }`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${
+                  opt.value === "In progress" ? "bg-blue-400" : opt.value === "on hold" ? "bg-gray-400" : opt.value === "Done" ? "bg-blue-400" : "bg-gray-400"
+                }`} />
+                {opt.label}
+              </button>
+            ))}
           </div>
 
-          {/* Bottom: Project info */}
-          <div className="p-6 md:p-10 pt-0">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-xs text-white/50 font-medium uppercase tracking-wider">{project.type || "Entwicklung"}</span>
-              {project.area && <span className="text-xs text-white/40">· {project.area}</span>}
-              {project.customerName && project.customerName !== "–" && (
-                <NextLink href={project.customerId ? `/portal/admin/kunden/${project.customerId}` : "#"}
-                  className="text-xs text-white/40 hover:text-white transition-colors">· {project.customerName}</NextLink>
-              )}
-            </div>
-
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-6">{project.name}</h1>
-
-          <div className="flex flex-wrap items-center gap-3">
-            {/* Status selector */}
-            <div className="flex bg-white/10 backdrop-blur-sm rounded-lg p-1">
-              {STATUS_OPTIONS.map(opt => (
-                <button key={opt.value} onClick={() => { setStatus(opt.value); save({ status: opt.value }); }}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-                    status === opt.value ? "bg-white text-gray-900" : "text-white/60 hover:text-white"
-                  }`}>
-                  <span className={`w-1.5 h-1.5 rounded-full ${
-                    status === opt.value
-                      ? (opt.value === "In progress" ? "bg-emerald-500" : opt.value === "on hold" ? "bg-yellow-500" : opt.value === "Done" ? "bg-blue-500" : "bg-gray-400")
-                      : opt.value === "In progress" ? "bg-emerald-400" : opt.value === "on hold" ? "bg-yellow-400" : opt.value === "Done" ? "bg-blue-400" : "bg-gray-400"
-                  }`} />
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Priority selector */}
-            <div className="flex bg-white/10 backdrop-blur-sm rounded-lg p-1">
-              {PRIO_OPTIONS.map(opt => (
-                <button key={opt.value} onClick={() => { setPriority(opt.value); save({ priority: opt.value }); }}
-                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-                    priority === opt.value ? "bg-white text-gray-900" : "text-white/60 hover:text-white"
-                  }`}>
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Action buttons */}
-            {project.liveUrl && (
-              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-                className="bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-xs font-medium hover:bg-white/20 transition-colors flex items-center gap-2">
-                <Globe className="w-3.5 h-3.5" />
-                Live
-                <ArrowUpRight className="w-3 h-3" />
-              </a>
-            )}
-            {project.repo && (
-              <a href={project.repo} target="_blank" rel="noopener noreferrer"
-                className="bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-xs font-medium hover:bg-white/20 transition-colors flex items-center gap-2">
-                <Github className="w-3.5 h-3.5" />
-                Repo
-                <ArrowUpRight className="w-3 h-3" />
-              </a>
-            )}
+          {/* Priority selector */}
+          <div className="flex bg-white rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-1">
+            {PRIO_OPTIONS.map(opt => (
+              <button key={opt.value} onClick={() => { setPriority(opt.value); save({ priority: opt.value }); }}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+                  priority === opt.value ? opt.active : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+                }`}>
+                {opt.label}
+              </button>
+            ))}
           </div>
-          </div>
+
+          {/* Action buttons */}
+          {project.liveUrl && (
+            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
+              className="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-xs font-medium hover:bg-blue-100 transition-colors flex items-center gap-2">
+              <Globe className="w-3.5 h-3.5" /> Live <ArrowUpRight className="w-3 h-3" />
+            </a>
+          )}
+          {project.repo && (
+            <a href={project.repo} target="_blank" rel="noopener noreferrer"
+              className="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-xs font-medium hover:bg-gray-200 transition-colors flex items-center gap-2">
+              <Github className="w-3.5 h-3.5" /> Repo <ArrowUpRight className="w-3 h-3" />
+            </a>
+          )}
         </div>
       </div>
-
-      {/* Content with padding */}
-      <div className="max-w-6xl mx-auto px-8 md:px-12 pb-24 pt-8 space-y-8">
 
       {/* Info Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -261,14 +244,14 @@ export default function ProjectDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         <div className="lg:col-span-8 space-y-4">
           {/* Next Action */}
-          <section className="bg-amber-50 rounded-2xl p-5">
-            <p className="text-xs font-medium text-amber-600 mb-2">Nächster Schritt</p>
+          <section className="bg-gray-100 rounded-2xl p-5">
+            <p className="text-xs font-medium text-gray-500 mb-2">Nächster Schritt</p>
             <div className={`relative group ${editing.nextAction ? "" : "cursor-pointer"}`} onClick={() => !editing.nextAction && setEditing(e => ({ ...e, nextAction: true }))}>
               {editing.nextAction ? (
                 <div className="space-y-3">
                   <input type="text" value={nextAction} onChange={e => setNextAction(e.target.value)}
                     onKeyDown={e => { if (e.key === "Enter") { save({ nextAction }); setEditing(ed => ({ ...ed, nextAction: false })); } }}
-                    className="w-full text-sm text-amber-800 bg-transparent border-b border-amber-200 pb-2 focus:outline-none focus:border-amber-400 transition-colors"
+                    className="w-full text-sm text-gray-700 bg-transparent border-b border-gray-200 pb-2 focus:outline-none focus:border-gray-300 transition-colors"
                     placeholder="Was steht als nächstes an?" autoFocus />
                   <div className="flex gap-2">
                     <button onClick={(e) => { e.stopPropagation(); save({ nextAction }); setEditing(e => ({ ...e, nextAction: false })); }} className="px-4 py-2 bg-gray-900 text-white text-xs font-medium rounded-lg hover:bg-gray-800 transition-colors">Speichern</button>
@@ -277,10 +260,10 @@ export default function ProjectDetailPage() {
                 </div>
               ) : (
                 <div className="flex items-start justify-between">
-                  <p className="text-sm text-amber-800">
-                    {nextAction || <span className="text-amber-400 italic">Kein n\u00E4chster Schritt definiert...</span>}
+                  <p className="text-sm text-gray-700">
+                    {nextAction || <span className="text-gray-400 italic">Kein n\u00E4chster Schritt definiert...</span>}
                   </p>
-                  <Pencil className="w-3.5 h-3.5 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ml-3" />
+                  <Pencil className="w-3.5 h-3.5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ml-3" />
                 </div>
               )}
             </div>
@@ -325,8 +308,8 @@ export default function ProjectDetailPage() {
                   <div key={m.id} className="flex items-center gap-3 py-3 border-b border-gray-100 last:border-0">
                     <div className="shrink-0">
                       {m.status === "Erledigt" ? (
-                        <div className="w-6 h-6 rounded-full bg-emerald-50 flex items-center justify-center">
-                          <Check className="w-3.5 h-3.5 text-emerald-600" />
+                        <div className="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center">
+                          <Check className="w-3.5 h-3.5 text-blue-600" />
                         </div>
                       ) : m.status === "In Arbeit" ? (
                         <div className="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center">
@@ -390,12 +373,12 @@ export default function ProjectDetailPage() {
 }
 
 const KATEGORIE_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
-  "Rechtliches": { bg: "bg-red-50", text: "text-red-700", dot: "bg-red-400" },
+  "Rechtliches": { bg: "bg-gray-100", text: "text-gray-700", dot: "bg-gray-400" },
   "SEO & Performance": { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400" },
-  "Design & Branding": { bg: "bg-purple-50", text: "text-purple-700", dot: "bg-purple-400" },
-  "Funktionalität": { bg: "bg-emerald-50", text: "text-emerald-700", dot: "bg-emerald-400" },
-  "Technik & Sicherheit": { bg: "bg-orange-50", text: "text-orange-700", dot: "bg-orange-400" },
-  "Launch & Übergabe": { bg: "bg-yellow-50", text: "text-yellow-700", dot: "bg-yellow-400" },
+  "Design & Branding": { bg: "bg-gray-100", text: "text-gray-700", dot: "bg-gray-400" },
+  "Funktionalität": { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400" },
+  "Technik & Sicherheit": { bg: "bg-gray-100", text: "text-gray-700", dot: "bg-gray-400" },
+  "Launch & Übergabe": { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400" },
 };
 
 function ProjectChecklist({ items, loading, projectId, expandedCategories, setExpandedCategories, onToggle }: {
@@ -433,7 +416,7 @@ function ProjectChecklist({ items, loading, projectId, expandedCategories, setEx
       <p className="text-xs text-gray-400 mb-4">{done} von {total} Punkten erledigt</p>
       <div className="h-2 bg-gray-100 rounded-full overflow-hidden mb-6">
         <div
-          className={`h-full rounded-full transition-all duration-500 ${pct === 100 ? "bg-emerald-500" : pct > 50 ? "bg-blue-500" : "bg-gray-400"}`}
+          className={`h-full rounded-full transition-all duration-500 bg-blue-500`}
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -458,7 +441,7 @@ function ProjectChecklist({ items, loading, projectId, expandedCategories, setEx
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-xs text-gray-500">{cat.done}/{cat.total}</span>
-                  {catPct === 100 && <CheckCircle2 className="w-4 h-4 text-emerald-500" />}
+                  {catPct === 100 && <CheckCircle2 className="w-4 h-4 text-blue-500" />}
                   {expanded ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
                 </div>
               </button>

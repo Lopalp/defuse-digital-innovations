@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Search, Loader2, ExternalLink, AlertCircle } from "lucide-react";
+import { useCachedFetch } from "@/lib/portal/use-cached-fetch";
 
 interface VercelProject {
   name: string;
@@ -23,23 +24,18 @@ function timeAgo(dateStr: string): string {
 }
 
 export default function AdminVercelPage() {
-  const [projects, setProjects] = useState<VercelProject[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, loading] = useCachedFetch<VercelProject[]>("/api/portal/admin/vercel", []);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
 
+  // Check for API error (e.g. missing token) separately
   useEffect(() => {
     fetch("/api/portal/admin/vercel")
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.error && !Array.isArray(data)) {
-          setError(data.error);
-          setProjects([]);
-        } else {
-          setProjects(Array.isArray(data) ? data : []);
-        }
-        setLoading(false);
-      });
+      .then(r => r.json())
+      .then(data => {
+        if (data.error && !Array.isArray(data)) setError(data.error);
+      })
+      .catch(() => {});
   }, []);
 
   const filtered = projects.filter(
@@ -56,19 +52,19 @@ export default function AdminVercelPage() {
           <h1 className="text-xl font-semibold tracking-tight text-gray-900">Vercel Deployments</h1>
           <p className="text-sm text-gray-500 mt-1">VNDL Team</p>
         </header>
-        <div className="bg-amber-50 rounded-2xl p-5">
+        <div className="bg-gray-100 rounded-2xl p-5">
           <div className="flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5 shrink-0" />
+            <AlertCircle className="w-5 h-5 text-gray-500 mt-0.5 shrink-0" />
             <div>
-              <p className="text-sm font-medium text-amber-700">Vercel Token nicht konfiguriert</p>
-              <p className="text-sm text-amber-700 mt-2">
+              <p className="text-sm font-medium text-gray-600">Vercel Token nicht konfiguriert</p>
+              <p className="text-sm text-gray-600 mt-2">
                 Um Vercel-Projekte anzuzeigen, f\u00FCge einen Token als{" "}
-                <code className="bg-amber-100 px-1.5 py-0.5 rounded text-xs">VERCEL_TOKEN</code> in{" "}
-                <code className="bg-amber-100 px-1.5 py-0.5 rounded text-xs">.env.local</code> hinzu.
+                <code className="bg-gray-200 px-1.5 py-0.5 rounded text-xs">VERCEL_TOKEN</code> in{" "}
+                <code className="bg-gray-200 px-1.5 py-0.5 rounded text-xs">.env.local</code> hinzu.
               </p>
-              <p className="text-xs text-amber-700 mt-2">
+              <p className="text-xs text-gray-600 mt-2">
                 Erstelle den Token unter{" "}
-                <code className="bg-amber-100 px-1 rounded">vercel.com/account/tokens</code>.
+                <code className="bg-gray-200 px-1 rounded">vercel.com/account/tokens</code>.
               </p>
             </div>
           </div>
@@ -129,7 +125,7 @@ export default function AdminVercelPage() {
                     <td className="px-6 py-4 text-gray-900 font-medium">{p.name}</td>
                     <td className="px-6 py-4">
                       {p.customDomains.length > 0 ? (
-                        <span className="text-xs text-emerald-600">{p.customDomains[0]}</span>
+                        <span className="text-xs text-blue-600">{p.customDomains[0]}</span>
                       ) : p.url ? (
                         <span className="text-xs text-gray-500">{p.url.replace("https://", "")}</span>
                       ) : (

@@ -25,7 +25,7 @@ export default function ReferenzenPage() {
             <Reveal direction="up" distance={80} duration={1.2}>
               <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.05]">
                 Projekte, die{" "}
-                <span className="font-display italic font-normal text-gray-500">
+                <span className="font-headline italic font-normal text-gray-500">
                   sprechen
                 </span>
               </h1>

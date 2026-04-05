@@ -19,9 +19,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = getPostBySlug(slug);
-  if (!post) return { title: "Nicht gefunden — defuse." };
+  if (!post) return { title: "Nicht gefunden — defuse digital" };
   return {
-    title: `${post.title} — defuse.`,
+    title: `${post.title} — defuse digital`,
     description: post.excerpt,
     openGraph: {
       title: post.title,
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "article",
       locale: "de_DE",
       publishedTime: post.date,
-      authors: ["defuse. digital"],
+      authors: ["defuse digital"],
       tags: [post.category, "Webdesign", "SEO", "Chemnitz"],
     },
     alternates: {
@@ -49,12 +49,12 @@ function BlogPostingJsonLd({ post }: { post: NonNullable<ReturnType<typeof getPo
     dateModified: post.date,
     author: {
       "@type": "Organization",
-      name: "defuse. digital",
+      name: "defuse digital",
       url: "https://defuse.digital",
     },
     publisher: {
       "@type": "Organization",
-      name: "defuse. digital",
+      name: "defuse digital",
       url: "https://defuse.digital",
     },
     mainEntityOfPage: {
@@ -327,7 +327,7 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
               <div>
                 <p className="text-base font-extrabold text-gray-900 tracking-tight">
-                  defuse. digital
+                  defuse digital
                 </p>
                 <p className="text-sm text-gray-500 font-medium">
                   Digitalagentur aus Chemnitz — Webdesign, SEO & Deep Tech

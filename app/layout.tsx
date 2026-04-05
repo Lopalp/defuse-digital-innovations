@@ -16,20 +16,24 @@ const playfair = Playfair_Display({
   weight: ["400"],
 });
 
-const morgelora = localFont({
+const barques = localFont({
   src: [
-    { path: "../public/morgelora.otf", weight: "400", style: "normal" },
-    { path: "../public/morgelora-italic.otf", weight: "400", style: "italic" },
+    { path: "../public/fonts/barques/Barques-Thin.woff2", weight: "100", style: "normal" },
+    { path: "../public/fonts/barques/Barques-Light.woff2", weight: "300", style: "normal" },
+    { path: "../public/fonts/barques/Barques-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../public/fonts/barques/Barques-Bold.woff2", weight: "700", style: "normal" },
+    { path: "../public/fonts/barques/Barques-ExtraBold.woff2", weight: "800", style: "normal" },
+    { path: "../public/fonts/barques/Barques-Heavy.woff2", weight: "900", style: "normal" },
   ],
-  variable: "--font-morgelora",
+  variable: "--font-barques",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://defuse.digital"),
   title: {
-    default: "defuse. — Digitalagentur für Websites, SEO & Deep Tech",
-    template: "%s | defuse.",
+    default: "defuse digital — Digitalagentur für Websites, SEO & Deep Tech",
+    template: "%s | defuse digital",
   },
   description:
     "Wir bauen schnelle, sichere und sichtbare Websites für KMU und Mittelstand. Next.js, Sanity CMS, SEO, DSGVO-konform. Lighthouse 90+ garantiert.",
@@ -51,9 +55,9 @@ export const metadata: Metadata = {
     "Deep Tech",
     "KI",
   ],
-  authors: [{ name: "defuse. digital" }],
-  creator: "defuse. digital",
-  publisher: "defuse. digital",
+  authors: [{ name: "defuse digital" }],
+  creator: "defuse digital",
+  publisher: "defuse digital",
   formatDetection: {
     email: false,
     address: false,
@@ -63,8 +67,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "de_DE",
     url: "https://defuse.digital",
-    siteName: "defuse. digital",
-    title: "defuse. — Digitalagentur für Websites, SEO & Deep Tech",
+    siteName: "defuse digital",
+    title: "defuse digital — Digitalagentur für Websites, SEO & Deep Tech",
     description:
       "Schnelle, sichere und sichtbare Websites für KMU und Mittelstand. Next.js, Sanity CMS, SEO, DSGVO-konform.",
     images: [
@@ -72,13 +76,13 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "defuse. — Digitalagentur",
+        alt: "defuse digital — Digitalagentur",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "defuse. — Digitalagentur für Websites, SEO & Deep Tech",
+    title: "defuse digital — Digitalagentur für Websites, SEO & Deep Tech",
     description:
       "Schnelle, sichere und sichtbare Websites für KMU und Mittelstand.",
     images: ["/og-image.jpg"],
@@ -99,6 +103,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { TransitionProvider } from "@/components/TransitionProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -113,7 +119,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "defuse. digital",
+              name: "defuse digital",
               url: "https://defuse.digital",
               logo: "https://defuse.digital/logo.png",
               description:
@@ -146,16 +152,19 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              name: "defuse. digital",
+              name: "defuse digital",
               url: "https://defuse.digital",
             }),
           }}
         />
       </head>
       <body
-        className={`${jakarta.variable} ${playfair.variable} ${morgelora.variable} font-sans bg-gray-50 text-gray-900 antialiased`}
+        className={`${jakarta.variable} ${playfair.variable} ${barques.variable} font-sans bg-gray-50 antialiased`}
+        style={{ color: "rgba(0, 0, 0, 0.85)" }}
       >
-        {children}
+        <TransitionProvider>
+          {children}
+        </TransitionProvider>
       </body>
     </html>
   );
