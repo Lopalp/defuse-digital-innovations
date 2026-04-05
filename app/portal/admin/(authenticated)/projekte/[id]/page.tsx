@@ -5,9 +5,14 @@ import { useParams } from "next/navigation";
 import {
   ArrowLeft, Globe, Github, Loader2, Calendar, User,
   Check, FolderKanban, Pencil, TrendingUp,
-  ArrowUpRight,
+  ArrowUpRight, CheckCircle2, Circle, ChevronDown, ChevronUp, Info,
 } from "lucide-react";
 import NextLink from "next/link";
+
+interface ChecklistItem {
+  id: string; name: string; projektId: string; kategorie: string;
+  erledigt: boolean; notizen: string; sortierung: number;
+}
 
 interface ProjectDetail {
   id: string; name: string; customerName: string; customerId: string;
@@ -48,6 +53,9 @@ export default function ProjectDetailPage() {
   const [repo, setRepo] = useState("");
 
   const [editing, setEditing] = useState<Record<string, boolean>>({});
+  const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
+  const [checklistLoading, setChecklistLoading] = useState(true);
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     fetch(`/api/portal/admin/projekte/${id}`)
@@ -64,6 +72,10 @@ export default function ProjectDetailPage() {
           setRepo(data.repo || "");
         }
         setLoading(false);
+        // Load checklist
+        fetch(`/api/portal/admin/checkliste?projectId=${id}`)
+          .then(r => r.json())
+          .then(items => { if (Array.isArray(items)) setChecklist(items); setChecklistLoading(false); });
       });
   }, [id]);
 
@@ -343,8 +355,144 @@ export default function ProjectDetailPage() {
           </section>
         </aside>
       </div>
+
+      {/* Projekt-Checkliste */}
+      <ProjectChecklist
+        items={checklist}
+        loading={checklistLoading}
+        projectId={id}
+        expandedCategories={expandedCategories}
+        setExpandedCategories={setExpandedCategories}
+        onToggle={async (item, checked) => {
+          // Optimistic update
+          setChecklist(prev => prev.map(i => i.name === item.name ? { ...i, erledigt: checked } : i));
+          const res = await fetch("/api/portal/admin/checkliste", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              projectId: id,
+              itemName: item.name,
+              erledigt: checked,
+              existingId: item.projektId ? item.id : undefined,
+            }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.id && !item.projektId) {
+              setChecklist(prev => prev.map(i => i.name === item.name ? { ...i, id: data.id, projektId: id } : i));
+            }
+          }
+        }}
+      />
       </div>
     </div>
+  );
+}
+
+const KATEGORIE_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
+  "Rechtliches": { bg: "bg-red-50", text: "text-red-700", dot: "bg-red-400" },
+  "SEO & Performance": { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400" },
+  "Design & Branding": { bg: "bg-purple-50", text: "text-purple-700", dot: "bg-purple-400" },
+  "Funktionalität": { bg: "bg-emerald-50", text: "text-emerald-700", dot: "bg-emerald-400" },
+  "Technik & Sicherheit": { bg: "bg-orange-50", text: "text-orange-700", dot: "bg-orange-400" },
+  "Launch & Übergabe": { bg: "bg-yellow-50", text: "text-yellow-700", dot: "bg-yellow-400" },
+};
+
+function ProjectChecklist({ items, loading, projectId, expandedCategories, setExpandedCategories, onToggle }: {
+  items: ChecklistItem[];
+  loading: boolean;
+  projectId: string;
+  expandedCategories: Record<string, boolean>;
+  setExpandedCategories: (fn: (prev: Record<string, boolean>) => Record<string, boolean>) => void;
+  onToggle: (item: ChecklistItem, checked: boolean) => void;
+}) {
+  if (loading) return (
+    <div className="py-8 text-center"><Loader2 className="w-5 h-5 text-gray-300 animate-spin mx-auto" /></div>
+  );
+
+  const total = items.length;
+  const done = items.filter(i => i.erledigt).length;
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+  // Group by category
+  const categories = [...new Set(items.map(i => i.kategorie))];
+  const grouped = categories.map(kat => ({
+    name: kat,
+    items: items.filter(i => i.kategorie === kat),
+    done: items.filter(i => i.kategorie === kat && i.erledigt).length,
+    total: items.filter(i => i.kategorie === kat).length,
+  }));
+
+  return (
+    <section className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-6">
+      {/* Header with progress */}
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-base font-semibold text-gray-900">Projekt-Checkliste</h2>
+        <span className="text-sm font-semibold text-gray-900">{pct}%</span>
+      </div>
+      <p className="text-xs text-gray-400 mb-4">{done} von {total} Punkten erledigt</p>
+      <div className="h-2 bg-gray-100 rounded-full overflow-hidden mb-6">
+        <div
+          className={`h-full rounded-full transition-all duration-500 ${pct === 100 ? "bg-emerald-500" : pct > 50 ? "bg-blue-500" : "bg-gray-400"}`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+
+      {/* Categories */}
+      <div className="space-y-2">
+        {grouped.map(cat => {
+          const colors = KATEGORIE_COLORS[cat.name] || { bg: "bg-gray-50", text: "text-gray-700", dot: "bg-gray-400" };
+          const expanded = expandedCategories[cat.name] ?? false;
+          const catPct = cat.total > 0 ? Math.round((cat.done / cat.total) * 100) : 0;
+
+          return (
+            <div key={cat.name} className="rounded-xl overflow-hidden">
+              {/* Category header */}
+              <button
+                onClick={() => setExpandedCategories(prev => ({ ...prev, [cat.name]: !expanded }))}
+                className={`w-full flex items-center justify-between px-4 py-3 ${colors.bg} transition-colors`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className={`w-2 h-2 rounded-full ${colors.dot}`} />
+                  <span className={`text-sm font-medium ${colors.text}`}>{cat.name}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-gray-500">{cat.done}/{cat.total}</span>
+                  {catPct === 100 && <CheckCircle2 className="w-4 h-4 text-emerald-500" />}
+                  {expanded ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                </div>
+              </button>
+
+              {/* Items */}
+              {expanded && (
+                <div className="border-x border-b border-gray-100 divide-y divide-gray-50">
+                  {cat.items.sort((a, b) => a.sortierung - b.sortierung).map(item => (
+                    <label key={item.name} className="flex items-start gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50/50 transition-colors group">
+                      <input
+                        type="checkbox"
+                        checked={item.erledigt}
+                        onChange={e => onToggle(item, e.target.checked)}
+                        className="mt-0.5 w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900/10 cursor-pointer"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className={`text-sm ${item.erledigt ? "text-gray-400 line-through" : "text-gray-900"}`}>
+                          {item.name}
+                        </p>
+                        {item.notizen && (
+                          <p className="text-xs text-gray-400 mt-0.5 line-clamp-1 group-hover:line-clamp-none transition-all">
+                            {item.notizen}
+                          </p>
+                        )}
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 

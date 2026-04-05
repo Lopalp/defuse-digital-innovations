@@ -448,6 +448,93 @@ export async function getAllInvoices(): Promise<Invoice[]> {
 }
 
 // =====================================================================
+// CHECKLISTE
+// =====================================================================
+export interface ChecklistItem {
+  id: string;
+  name: string;
+  projektId: string;
+  kategorie: string;
+  erledigt: boolean;
+  notizen: string;
+  sortierung: number;
+}
+
+const CHECKLISTE_DB = process.env.NOTION_CHECKLISTE_DB!;
+
+export async function getChecklistForProject(projectId: string): Promise<ChecklistItem[]> {
+  const [templates, projectItems] = await Promise.all([
+    notion.databases.query({
+      database_id: CHECKLISTE_DB,
+      filter: { or: [
+        { property: "Projekt", relation: { is_empty: true } },
+      ]},
+      sorts: [{ property: "Sortierung", direction: "ascending" }],
+      page_size: 100,
+    }),
+    notion.databases.query({
+      database_id: CHECKLISTE_DB,
+      filter: { property: "Projekt", relation: { contains: projectId } },
+      page_size: 100,
+    }),
+  ]);
+
+  const projectMap = new Map<string, any>();
+  for (const page of projectItems.results as any[]) {
+    projectMap.set(text(page.properties, "Name"), page);
+  }
+
+  return (templates.results as any[]).map(page => {
+    const name = text(page.properties, "Name");
+    const override = projectMap.get(name);
+    return {
+      id: override?.id || page.id,
+      name,
+      projektId: override ? projectId : "",
+      kategorie: selectName(page.properties, "Kategorie"),
+      erledigt: override ? checkbox(override.properties, "Erledigt") : false,
+      notizen: text(page.properties, "Notizen"),
+      sortierung: num(page.properties, "Sortierung"),
+    };
+  });
+}
+
+export async function toggleChecklistItem(projectId: string, itemName: string, erledigt: boolean, existingProjectItemId?: string) {
+  if (existingProjectItemId) {
+    await notion.pages.update({
+      page_id: existingProjectItemId,
+      properties: { Erledigt: { checkbox: erledigt } },
+    });
+    return existingProjectItemId;
+  }
+
+  // Find template to copy from
+  const templates = await notion.databases.query({
+    database_id: CHECKLISTE_DB,
+    filter: { and: [
+      { property: "Name", title: { equals: itemName } },
+      { property: "Projekt", relation: { is_empty: true } },
+    ]},
+    page_size: 1,
+  });
+  const tmpl = templates.results[0] as any;
+  if (!tmpl) return null;
+
+  const page = await notion.pages.create({
+    parent: { database_id: CHECKLISTE_DB },
+    properties: {
+      Name: { title: [{ text: { content: itemName } }] },
+      Projekt: { relation: [{ id: projectId }] },
+      Kategorie: { select: { name: selectName(tmpl.properties, "Kategorie") } },
+      Sortierung: { number: num(tmpl.properties, "Sortierung") },
+      Notizen: { rich_text: [{ text: { content: text(tmpl.properties, "Notizen") } }] },
+      Erledigt: { checkbox: erledigt },
+    },
+  });
+  return page.id;
+}
+
+// =====================================================================
 // BACKLOG TASKS
 // =====================================================================
 const BACKLOG_DB = process.env.NOTION_BACKLOG_DB!;
