@@ -19,7 +19,7 @@ export default function Footer() {
                   fill="currentColor"
                 />
               </svg>
-              <span className="text-xl font-extrabold tracking-tighter">defuse.</span>
+              <span className="text-xl font-bold tracking-tighter">defuse digital</span>
             </Link>
             <p className="text-sm text-gray-400 max-w-xs leading-relaxed">
               Digitalagentur für hochwertige Websites, CMS-Lösungen und
@@ -77,7 +77,7 @@ export default function Footer() {
 
         <div className="mt-16 pt-8 border-t border-gray-200/50 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-400">
-            &copy; {new Date().getFullYear()} defuse. digital. Alle Rechte vorbehalten.
+            &copy; {new Date().getFullYear()} defuse digital. Alle Rechte vorbehalten.
           </p>
           <p className="text-xs text-gray-400">
             Made in Chemnitz

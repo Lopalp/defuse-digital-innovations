@@ -2,6 +2,8 @@
 
 import { useRef, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { usePageTransition } from "@/components/TransitionProvider";
 import {
   Zap,
   ShieldCheck,
@@ -40,6 +42,7 @@ const allCards = [
     description:
       "Wir übersetzen komplexe Geschäftsprozesse in digitale Systeme — von individuellen Anwendungen über Datenarchitekturen bis zu Deep-Tech-Lösungen, die Ihre Entscheidungen messbar verbessern.",
     image: IMG_1,
+    href: "/leistungen/business-intelligence",
   },
   {
     icon: Zap,
@@ -47,6 +50,7 @@ const allCards = [
     description:
       "Fullstack-Entwicklung mit Next.js, Headless-Architekturen und Sanity CMS — performante, skalierbare Plattformen, die exakt auf Ihre Anforderungen zugeschnitten sind.",
     image: HERO_IMAGE,
+    href: "/leistungen/web-development",
   },
   {
     icon: ShieldCheck,
@@ -54,6 +58,7 @@ const allCards = [
     description:
       "Plauderbot und Lumera.ai sind proprietäre Lösungen, die wir selbst entwickeln und betreiben — bewährte Technologie aus eigener Hand, die direkt in Ihr Projekt integriert werden kann.",
     image: IMG_2,
+    href: "/produkte",
   },
   {
     separator: true,
@@ -68,6 +73,7 @@ const allCards = [
     description:
       "Kompletter Website-Relaunch für eine Pension in der Sächsischen Schweiz. Lighthouse 98, Ladezeit unter 1 Sekunde.",
     image: IMG_3,
+    href: "/referenzen/laasen-perle",
   },
   {
     icon: Hexagon,
@@ -75,6 +81,7 @@ const allCards = [
     description:
       "Corporate Website mit scroll-basiertem Storytelling und Custom-Animationen. Minimalistisches Design, maximale Wirkung.",
     image: IMG_4,
+    href: "/referenzen/lucram-media",
   },
   {
     icon: Users,
@@ -82,6 +89,7 @@ const allCards = [
     description:
       "SaaS-Landingpage mit Sanity-gesteuertem Blog und automatisierter Lead-Generierung. Conversion Rate +40%.",
     image: IMG_1,
+    href: "/referenzen/techstart",
   },
   {
     icon: Square,
@@ -89,6 +97,7 @@ const allCards = [
     description:
       "Von WordPress zu Next.js — Ladezeit von 4,2s auf 0,8s. Top-3-Ranking für lokale Suchbegriffe.",
     image: IMG_3,
+    href: "/referenzen/handwerk-schuster",
   },
 ];
 
@@ -161,11 +170,16 @@ const MENU_LEFT = [
 
 const MENU_RIGHT = [
   { label: "Über uns", href: "/ueber-uns" },
+  { label: "Portal", href: "/portal" },
   { label: "Kontakt", href: "/kontakt" },
 ];
 
 export default function Home() {
+  const { navigate } = usePageTransition();
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [expandingIdx, setExpandingIdx] = useState<number | null>(null);
+  const [lockedState, setLockedState] = useState<{ morph: number, hScroll: number } | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const hScrollRef = useRef(0);
   const scrollingBackRef = useRef(false);
@@ -445,13 +459,19 @@ export default function Home() {
 
   const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-  // --- Derived morph values ---
-  const morph = isMd ? Math.min(Math.max(scrollRatio, 0), 1) : 0;
-  const settled = morph >= 0.995;
+  // --- Derived morph values with Locking ---
+  const currentMorph = isMd ? Math.min(Math.max(scrollRatio, 0), 1) : 0;
+  const currentHScroll = hScrollRef.current;
+  
+  const morph = lockedState ? lockedState.morph : currentMorph;
+  const hScrollVal = lockedState ? lockedState.hScroll : currentHScroll;
+
+  const settled = currentMorph >= 0.995;
+  const somethingIsExpanding = expandingIdx !== null;
 
   // Peek: separator card appears once after morph settles, then stays with CSS nudge animation
   useEffect(() => {
-    if (settled && hScroll === 0 && !peekShown) {
+    if (settled && hScrollVal === 0 && !peekShown) {
       peekTimerRef.current = setTimeout(() => {
         setPeekShown(true);
       }, 1500);
@@ -635,9 +655,15 @@ export default function Home() {
 
         let top: number, right: number, bottom: number, left: number;
         let tx = 0; // translateX — GPU composited, no layout thrash
+        let opacity = 1;
+        let borderRadius = radius;
 
         const ed = gp.entryDist;
         const phase2 = Math.max(0, hScroll - ed);
+
+        // expansion logic
+        const isExpanding = expandingIdx === i;
+        const somethingIsExpanding = expandingIdx !== null;
 
         if (isFeature) {
           const s = startInsets[i];
@@ -660,14 +686,29 @@ export default function Home() {
           }
         }
 
+        // Cinematic Expansion Override
+        if (somethingIsExpanding) {
+          if (isExpanding) {
+            top = 0; left = 0; right = 0; bottom = 0;
+            tx = 0;
+            borderRadius = 0;
+          } else {
+            // Neighbors slide out
+            const direction = i < expandingIdx ? -1 : 1;
+            tx = tx + (direction * gp.vw);
+            opacity = 0;
+          }
+        }
+
         // Hover: push-aside effect for visible group of 3
         const stepSize = gp.colW + gp.gap;
         const baseIdx = stepSize > 0 ? Math.round(phase2 / stepSize) : 0;
         const isAligned = stepSize > 0 && Math.abs(phase2 - baseIdx * stepSize) < 5;
 
-        if (isMd && settled && hoveredCard !== null && isAligned && baseIdx >= 3) {
+        if (isMd && settled && hoveredCard !== null && isAligned && baseIdx >= 3 && !somethingIsExpanding) {
           const visibles = [baseIdx, baseIdx + 1, baseIdx + 2];
-          if (visibles.includes(i) && visibles.includes(hoveredCard)) {
+          const separatorInView = visibles.some(vi => allCards[vi] && 'separator' in allCards[vi]);
+          if (!separatorInView && visibles.includes(i) && visibles.includes(hoveredCard)) {
             const gridW = 3 * gp.colW + 2 * gp.gap;
             const hoverW = gp.colW * 1.2;
             const otherW = (gridW - hoverW - 2 * gp.gap) / 2;
@@ -698,13 +739,12 @@ export default function Home() {
 
         // Visibility: cards 3+ only appear when hScroll moves them into view
         // Separator also shows during peek
-        let opacity: number;
-        if (isSeparator && peekShown && hScroll === 0) {
-          opacity = 1;
-        } else if (!isFeature && (!settled || hScroll === 0)) {
-          opacity = 0;
-        } else {
-          opacity = 1;
+        if (!isExpanding && !somethingIsExpanding) {
+           if (isSeparator && peekShown && hScroll === 0) {
+             opacity = 1;
+           } else if (!isFeature && (!settled || hScroll === 0)) {
+             opacity = 0;
+           }
         }
 
         // Cull off-screen cards (use visual position with transform)
@@ -723,28 +763,51 @@ export default function Home() {
           <div
             key={`overlay-${i}`}
             className={`fixed overflow-hidden ${settled && opacity > 0 && !(isFeature && hScroll > 0) ? 'cursor-pointer' : 'pointer-events-none'}`}
+            onClick={(e) => {
+              if (settled && opacity > 0 && !somethingIsExpanding) {
+                if ('separator' in card && card.separator) {
+                  if (peekShown && hScroll === 0) {
+                    const gp = gridParamsRef.current;
+                    const snapTarget = gp.vw - gp.s3Left;
+                    animateHScroll(snapTarget);
+                  }
+                  return;
+                }
+                
+                setExpandingIdx(i);
+                
+                // Start navigation slightly after animation starts
+                setTimeout(() => {
+                  if (card.href) router.push(card.href);
+                }, 900);
+
+                // Reset state after transition is complete
+                setTimeout(() => {
+                  setExpandingIdx(null);
+                }, 2000);
+              }
+            }}
             style={{
-              zIndex: hoveredCard === i ? 8 : isCenter && !settled ? 6 : 4,
+              zIndex: isExpanding ? 100 : (hoveredCard === i ? 8 : (isCenter && !settled ? 6 : 4)),
               backgroundColor: isSeparator ? '#000' : undefined,
               top: `${top}px`,
               left: `${left}px`,
               right: `${right}px`,
               bottom: `${bottom}px`,
-              borderRadius: `${radius}rem`,
+              borderRadius: `${borderRadius}rem`,
               opacity,
               transform: `translateX(${tx}px)`,
-              willChange: 'transform',
-              animation: (isSeparator && peekShown && hScroll === 0)
-                ? 'peek-nudge 4s cubic-bezier(0.16, 1, 0.3, 1) 2s infinite'
-                : 'none',
-              transition: (hoverTransRef.current && settled && isAligned)
-                ? 'top 0.4s ease-out, left 0.4s ease-out, right 0.4s ease-out, bottom 0.4s ease-out, transform 0.4s ease-out'
-                : (isSeparator && settled && hScroll === 0)
-                  ? 'left 0.8s cubic-bezier(0.16, 1, 0.3, 1), right 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease-out'
-                  : 'none',
+              willChange: 'transform, top, left, right, bottom, opacity',
+              transition: somethingIsExpanding 
+                ? `top 0.9s ${EASE_OUT}, left 0.9s ${EASE_OUT}, right 0.9s ${EASE_OUT}, bottom 0.9s ${EASE_OUT}, transform 0.9s ${EASE_OUT}, opacity 0.7s ${EASE_OUT}, border-radius 0.9s ${EASE_OUT}`
+                : (hoverTransRef.current && settled)
+                  ? 'top 0.4s ease-out, left 0.4s ease-out, right 0.4s ease-out, bottom 0.4s ease-out, transform 0.4s ease-out'
+                  : (isSeparator && settled && hScroll === 0)
+                    ? 'left 0.8s cubic-bezier(0.16, 1, 0.3, 1), right 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease-out'
+                    : 'none',
             }}
             onMouseEnter={() => {
-              if (settled) {
+              if (settled && !somethingIsExpanding) {
                 hoveredCardRef.current = i;
                 hoverTransRef.current = true;
                 if (hoverTransTimerRef.current) clearTimeout(hoverTransTimerRef.current);
@@ -759,16 +822,20 @@ export default function Home() {
               hoverTransTimerRef.current = setTimeout(() => { hoverTransRef.current = false; }, 500);
             }}
           >
+            {isExpanding && !isSeparator && (
+               <div className="absolute inset-0 flex flex-col justify-end px-8 lg:px-20 xl:px-28 pb-20 lg:pb-32 z-50">
+                 <div className="animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-300 fill-mode-both">
+                    <p className="text-[10px] uppercase tracking-[0.6em] text-white/50 mb-6 font-bold">Leistungen · Deep Tech</p>
+                    <h2 className="text-6xl lg:text-8xl xl:text-[9rem] font-extrabold leading-[0.85] tracking-tighter text-white">
+                      {card.title?.toUpperCase().split(' ').map((word, idx) => (
+                        <span key={idx} className="block">{word}</span>
+                      ))}
+                    </h2>
+                 </div>
+               </div>
+            )}
             {isSeparator ? (
-              <div className="absolute inset-0 bg-black flex items-center justify-center"
-                onClick={() => {
-                  if (peekShown && hScroll === 0) {
-                    const gp = gridParamsRef.current;
-                    const snapTarget = gp.vw - gp.s3Left;
-                    animateHScroll(snapTarget);
-                  }
-                }}
-              >
+              <div className="absolute inset-0 bg-black flex items-center justify-center">
                 <div className="text-white font-extrabold text-center" style={{ fontSize: 'min(14rem, 35vw)', lineHeight: 0.8, letterSpacing: '-0.04em' }}>
                   <div>PRO</div>
                   <div>JEK</div>
@@ -860,8 +927,12 @@ export default function Home() {
 
       {/* Header */}
       <header
-        className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl px-4 md:px-6 py-3 md:py-4 flex items-center justify-between z-50"
-        style={{ opacity: menuOpen ? 0 : 1, transition: "opacity 0.3s ease", pointerEvents: menuOpen ? "none" : "auto" }}
+        className="fixed top-4 md:top-6 left-1/2 w-[95%] max-w-6xl px-4 md:px-6 py-3 md:py-4 flex items-center justify-between z-50 transition-all duration-700"
+        style={{ 
+          opacity: menuOpen || somethingIsExpanding ? 0 : 1, 
+          transform: menuOpen || somethingIsExpanding ? 'translate(-50%, -20px)' : 'translate(-50%, 0)',
+          pointerEvents: menuOpen || somethingIsExpanding ? "none" : "auto" 
+        }}
       >
         {/* Logo — links */}
         <a
@@ -881,8 +952,8 @@ export default function Home() {
               fill="currentColor"
             />
           </svg>
-          <span className="text-2xl font-extrabold tracking-tighter">
-            defuse.
+          <span className="text-2xl font-bold tracking-tighter">
+            defuse digital
           </span>
         </a>
 
@@ -913,16 +984,15 @@ export default function Home() {
       >
         {/* 01 — Hero */}
         <section className="relative h-screen snap-start flex flex-col items-center justify-center px-4 text-center">
-          <div className="relative z-10" style={{ opacity: menuOpen ? 0 : heroTextOp, transition: "opacity 0.4s ease" }}>
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-gray-900 max-w-4xl leading-tight">
-              Wir bauen{" "}
-              <span className="font-display italic font-normal text-4xl sm:text-6xl md:text-7xl mx-1 text-gray-800">
-                digitale
-              </span>{" "}
-              Infrastruktur
+<div className="relative z-10" style={{ opacity: menuOpen ? 0 : heroTextOp, transition: "opacity 0.4s ease" }}>
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-gray-900 max-w-4xl leading-[0.95]">
+              Digitalagentur für Websites, die{" "}
+              <span className="font-headline italic font-normal text-gray-600">
+                wirken
+              </span>.
             </h1>
-            <p className="mt-4 md:mt-5 text-base sm:text-lg md:text-xl text-gray-700 w-[95%] sm:w-[80%] lg:w-1/2 mx-auto whitespace-nowrap overflow-hidden text-ellipsis font-medium">
-              Websites, Plattformen und Deep Tech — für Unternehmen, die mehr erwarten.
+            <p className="mt-6 md:mt-8 text-base sm:text-lg md:text-xl text-gray-500 max-w-xl mx-auto font-medium leading-relaxed">
+              Schnell, sicher, sichtbar — wir entwickeln Next.js-Plattformen und Deep-Tech-Lösungen für den Mittelstand.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
